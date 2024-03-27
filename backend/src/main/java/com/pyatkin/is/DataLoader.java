@@ -29,8 +29,8 @@ public class DataLoader implements CommandLineRunner {
         this.departmentRepository.save(itDepartment);
         this.departmentRepository.save(officeDepartment);
 
-        this.vacancyRepository.save(new Vacancy(1L, "Инженер-программист", "Разработка новых функций для флагманского продукта компании", 50000.0, LocalDate.parse("2024-04-30"), null, itDepartment));
-        this.vacancyRepository.save(new Vacancy(2L, "Маркетолог", "Создание и управление маркетинговыми кампаниями", 45000.0, LocalDate.parse("2024-04-25"), null, officeDepartment));
-        this.vacancyRepository.save(new Vacancy(3L, "Финансовый аналитик", "Анализ финансовых данных и предоставление инсайтов", 55000.0, LocalDate.parse("2024-05-10"), null, itDepartment));
+        this.vacancyRepository.save(new Vacancy(1L, "Инженер-программист", "Разработка новых функций для флагманского продукта компании", 50000.0, LocalDate.parse("2024-04-30"), null, null, itDepartment));
+        this.vacancyRepository.save(new Vacancy(2L, "Маркетолог", "Создание и управление маркетинговыми кампаниями", 45000.0, LocalDate.parse("2024-04-25"), null,null, officeDepartment));
+        this.vacancyRepository.save(new Vacancy(3L, "Финансовый аналитик", "Анализ финансовых данных и предоставление инсайтов", 55000.0, LocalDate.parse("2024-05-10"), null,null, itDepartment));
     }
 }

@@ -1,19 +1,21 @@
 package com.pyatkin.is.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "Vacancy")
@@ -41,9 +43,13 @@ public class Vacancy {
     @Column(name = "Candidate", unique = true)
     private String candidate;
 
-    @ManyToOne
-    @JoinColumn(name = "DepartmentId", nullable = false)
+    @Transient
+    private Long departmentId; // Временное поле для хранения идентификатора департамента
+
+    @ManyToOne(fetch = FetchType.LAZY) // Ленивая загрузка, чтобы избежать избыточных запросов
+    @JoinColumn(name = "DepartmentId", referencedColumnName = "departmentId", nullable = false) // Связь с таблицей Department по полю departmentId
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Department department;
 
-    // Getters and setters
+    // Геттеры и сеттеры
 }

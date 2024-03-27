@@ -1,6 +1,8 @@
 package com.pyatkin.is.controller;
 
+import com.pyatkin.is.models.Department;
 import com.pyatkin.is.models.Vacancy;
+import com.pyatkin.is.repository.DepartmentRepository;
 import com.pyatkin.is.repository.VacancyRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +24,11 @@ import java.util.List;
 public class VacancyController {
 
     private final VacancyRepository vacancyService;
+    private final DepartmentController departmentController;
 
-    public VacancyController(VacancyRepository vacancyService) {
+    public VacancyController(VacancyRepository vacancyService, DepartmentRepository departmentRepository, DepartmentController departmentController) {
         this.vacancyService = vacancyService;
+        this.departmentController = departmentController;
     }
 
     // Получение всех вакансий
@@ -49,6 +53,8 @@ public class VacancyController {
     // Создание новой вакансии
     @PostMapping
     public ResponseEntity<Vacancy> createVacancy(@RequestBody Vacancy vacancy) {
+        Department department = departmentController.findById(vacancy.getDepartmentId());
+        vacancy.setDepartment(department);
         Vacancy createdVacancy = vacancyService.save(vacancy);
         return new ResponseEntity<>(createdVacancy, HttpStatus.CREATED);
     }
