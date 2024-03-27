@@ -39,6 +39,15 @@ function VacancyPage({ setPageTitle }) {
         fetchVacancies(); // Обновляем список вакансий после закрытия диалогового окна
     };
 
+    const deleteVacancy = async (vacancyId) => {
+        try {
+            await axios.delete(`http://localhost:8080/vacancies/${vacancyId}`); // Ваш URL для удаления вакансии
+            fetchVacancies(); // Обновляем список вакансий после удаления
+        } catch (error) {
+            console.error('Error deleting vacancy:', error);
+        }
+    };
+
     const renderVacancyRow = vacancy => {
         return (
             <tr key={vacancy.vacancyId}>
@@ -47,6 +56,7 @@ function VacancyPage({ setPageTitle }) {
                 <td>{vacancy.salary}</td>
                 <td>
                     <button onClick={() => openViewDialog(vacancy)}>Просмотр карточки вакансии</button>
+                    <button onClick={() => deleteVacancy(vacancy.vacancyId)}>Удалить</button>
                 </td>
             </tr>
         );

@@ -46,10 +46,15 @@ public class Vacancy {
     @Transient
     private Long departmentId; // Временное поле для хранения идентификатора департамента
 
-    @ManyToOne(fetch = FetchType.LAZY) // Ленивая загрузка, чтобы избежать избыточных запросов
-    @JoinColumn(name = "DepartmentId", referencedColumnName = "departmentId", nullable = false) // Связь с таблицей Department по полю departmentId
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DepartmentId", referencedColumnName = "departmentId", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Department department;
+
+    @ManyToOne(fetch = FetchType.LAZY) // Ленивая загрузка, чтобы избежать избыточных запросов
+    @JoinColumn(name = "stageId", referencedColumnName = "stageId", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private HiringStage stageId; // Связь с таблицей HiringStage по полю hiringStageId
 
     // Геттеры и сеттеры
 }

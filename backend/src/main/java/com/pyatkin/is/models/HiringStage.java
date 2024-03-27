@@ -6,10 +6,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "HiringStages")
-public class HiringStages {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class HiringStage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long stageId;
