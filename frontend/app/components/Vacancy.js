@@ -36,6 +36,7 @@ function VacancyPage({ setPageTitle }) {
     const handleCloseDialog = () => {
         setViewDialogOpen(false);
         setCreateDialogOpen(false);
+        fetchVacancies(); // Обновляем список вакансий после закрытия диалогового окна
     };
 
     const renderVacancyRow = vacancy => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function CreateVacancyDialog({ onCreate, onClose }) {
+function CreateVacancyDialog({ onCreate, onClose, updateVacancies }) {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [salary, setSalary] = useState('');
@@ -34,6 +34,7 @@ function CreateVacancyDialog({ onCreate, onClose }) {
             });
             onCreate(response.data);
             onClose(); // Закрываем форму после успешного создания вакансии
+            updateVacancies(); // Обновляем список вакансий
         } catch (error) {
             console.error('Error creating vacancy:', error);
         }
