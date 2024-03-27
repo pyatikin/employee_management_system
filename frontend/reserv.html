@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Маршруты в React</title>
+    <style>
+        /* Стили для верхней строки */
+        header {
+            background-color: #3498db; /* Голубой цвет */
+            color: #fff; /* Белый цвет текста */
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Стили для боковой панели */
+        .sidebar {
+            width: 200px;
+            background-color: #f0f0f0;
+            position: fixed;
+            top: 0;
+            left: -200px;
+            height: 100%;
+            transition: left 0.3s ease;
+            z-index: 1001; /* Перекрываем заголовок */
+            padding-top: 60px; /* Отступ сверху для учёта верхней строки */
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        nav {
+            padding-left: 20px;
+        }
+
+        nav a {
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: #000;
+        }
+
+        nav a.active {
+            background-color: #486ca3;
+            color: #fff;
+        }
+
+        /* Стили для контента */
+        .content {
+            margin-left: 220px; /* Ширина боковой панели + небольшой отступ */
+            padding: 20px;
+            z-index: 1000; /* Поднимаем контент над боковой панелью */
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+<div id="app"></div>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/history@5/umd/history.production.min.js" crossorigin></script>
+
+<script src="https://unpkg.com/react-router@6.3.0/umd/react-router.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-router-dom@6.3.0/umd/react-router-dom.production.min.js" crossorigin></script>
+
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+    const Router = ReactRouterDOM.BrowserRouter;
+    const Route = ReactRouterDOM.Route;
+    const Routes = ReactRouterDOM.Routes;
+    const NavLink = ReactRouterDOM.NavLink;
+
+    function Home(){ return <h2>Главная</h2>; }
+    function About(){ return <h2>О сайте</h2>; }
+    function NotFound(){return <h2>Ресурс не найден</h2>; }
+    function Vacancies(){
+        return <div>
+            <h2>Вакансии</h2>
+        </div>;
+    }
+    function Applicants(){
+        return <div>
+            <h2>Соискатели</h2>
+        </div>;
+    }
+    function Documents(){
+        return <div>
+            <h2>Документы</h2>
+        </div>;
+    }
+    function Reports(){
+        return <div>
+            <h2>Отчеты</h2>
+        </div>;
+    }
+    function Sidebar(){
+        return (
+            <div className="sidebar">
+                <nav>
+                    <NavLink to="/vacancies" activeClassName="active">Вакансии</NavLink>
+                    <NavLink to="/applicants" activeClassName="active">Соискатели</NavLink>
+                    <NavLink to="/documents" activeClassName="active">Документы</NavLink>
+                    <NavLink to="/reports" activeClassName="active">Отчеты</NavLink>
+                </nav>
+            </div>
+        );
+    }
+
+    function App() {
+        const [pageTitle, setPageTitle] = React.useState("Главная");
+
+        return (
+            <Router>
+                <div>
+                    <header>
+                        <h1>{pageTitle}</h1>
+                        <button onClick={() => document.querySelector('.sidebar').classList.toggle('open')}>Меню</button>
+                    </header>
+                    <Sidebar />
+                    <div className="content">
+                        <Routes>
+                            <Route path="/" element={<Home setPageTitle={setPageTitle} />} />
+                            <Route path="/about" element={<About setPageTitle={setPageTitle} />} />
+                            <Route path="/vacancies" element={<Vacancies setPageTitle={setPageTitle} />} />
+                            <Route path="/applicants" element={<Applicants setPageTitle={setPageTitle} />} />
+                            <Route path="/documents" element={<Documents setPageTitle={setPageTitle} />} />
+                            <Route path="/reports" element={<Reports setPageTitle={setPageTitle} />} />
+                            <Route path="*" element={<Home setPageTitle={setPageTitle} />} />
+                        </Routes>
+                    </div>
+                </div>
+            </Router>
+        );
+    }
+
+    ReactDOM.createRoot(
+        document.getElementById("app")
+    )
+        .render(
+            <App />
+        );
+</script>
+</body>
+</html>
