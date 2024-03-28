@@ -3,24 +3,27 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import ViewVacancyDialog from './ViewVacancyDialog';
 import CreateVacancyDialog from './CreateVacancyDialog';
+import ChangeVacancyStatusDialog from './ChangeVacancyStatusDialog';
 
-function VacancyPage({ setPageTitle }) {
+function WorkingVacancies({ setPageTitle }) {
     const [vacancies, setVacancies] = useState([]);
     const [selectedVacancy, setSelectedVacancy] = useState(null);
     const [isViewDialogOpen, setViewDialogOpen] = useState(false);
     const [isCreateDialogOpen, setCreateDialogOpen] = useState(false);
+    const [isChangeStatusDialogOpen, setChangeStatusDialogOpen] = useState(false);
+    const [selectedVacancyId, setSelectedVacancyId] = useState(null);
 
     useEffect(() => {
-        setPageTitle("Вакансии");
+        setPageTitle("Вакансии в работе");
         fetchVacancies();
     }, [setPageTitle]);
 
     const fetchVacancies = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/vacancies'); // Ваш URL для запроса данных о вакансиях
+            const response = await axios.get('http://localhost:8080/vacancies/working-vacancies');
             setVacancies(response.data);
         } catch (error) {
-            console.error('Error fetching vacancies:', error);
+            console.error('Error fetching working vacancies:', error);
         }
     };
 
@@ -36,16 +39,13 @@ function VacancyPage({ setPageTitle }) {
     const handleCloseDialog = () => {
         setViewDialogOpen(false);
         setCreateDialogOpen(false);
-        fetchVacancies(); // Обновляем список вакансий после закрытия диалогового окна
+        setChangeStatusDialogOpen(false);
+        fetchVacancies();
     };
 
-    const deleteVacancy = async (vacancyId) => {
-        try {
-            await axios.delete(`http://localhost:8080/vacancies/${vacancyId}`); // Ваш URL для удаления вакансии
-            fetchVacancies(); // Обновляем список вакансий после удаления
-        } catch (error) {
-            console.error('Error deleting vacancy:', error);
-        }
+    const openChangeStatusDialog = vacancyId => {
+        setSelectedVacancyId(vacancyId);
+        setChangeStatusDialogOpen(true);
     };
 
     const renderVacancyRow = vacancy => {
@@ -55,8 +55,8 @@ function VacancyPage({ setPageTitle }) {
                 <td>{vacancy.department.name}</td>
                 <td>{vacancy.salary}</td>
                 <td>
-                    <button onClick={() => openViewDialog(vacancy)}>Просмотр карточки вакансии</button>
-                    <button onClick={() => deleteVacancy(vacancy.vacancyId)}>Удалить</button>
+                    <button onClick={() => openViewDialog(vacancy)}>Просмотр</button>
+                    <button onClick={() => openChangeStatusDialog(vacancy.vacancyId)}>Изменить статус</button>
                 </td>
             </tr>
         );
@@ -64,7 +64,7 @@ function VacancyPage({ setPageTitle }) {
 
     return (
         <div>
-            <h2>Список вакансий</h2>
+            <h2>Список вакансий в работе</h2>
             <Link to="#" onClick={openCreateDialog}>Создать новую вакансию</Link>
             <table>
                 <thead>
@@ -82,8 +82,11 @@ function VacancyPage({ setPageTitle }) {
 
             {isViewDialogOpen && <ViewVacancyDialog vacancy={selectedVacancy} onClose={handleCloseDialog} />}
             {isCreateDialogOpen && <CreateVacancyDialog onCreate={handleCloseDialog} onClose={handleCloseDialog} />}
+            {isChangeStatusDialogOpen && (
+                <ChangeVacancyStatusDialog vacancyId={selectedVacancyId} onClose={handleCloseDialog} fetchVacancies={fetchVacancies} />
+            )}
         </div>
     );
 }
 
-export default VacancyPage;
+export default WorkingVacancies;

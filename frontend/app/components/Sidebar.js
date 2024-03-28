@@ -9,8 +9,9 @@ function Sidebar() {
     return (
         <div className="sidebar">
             <nav>
-                <NavLink to="/vacancies" activeClassName="active" onClick={closeMenu}>Вакансии</NavLink>
-                <NavLink to="/applicants" activeClassName="active" onClick={closeMenu}>Соискатели</NavLink>
+                <NavLink to="/open-vacancies" activeClassName="active" onClick={closeMenu}>Открытые вакансии</NavLink>
+                <NavLink to="/working-vacancies" activeClassName="active" onClick={closeMenu}>Вакансии в работе</NavLink>
+                <NavLink to="/candidates" activeClassName="active" onClick={closeMenu}>Соискатели</NavLink>
                 <NavLink to="/documents" activeClassName="active" onClick={closeMenu}>Документы</NavLink>
                 <NavLink to="/reports" activeClassName="active" onClick={closeMenu}>Отчеты</NavLink>
             </nav>
