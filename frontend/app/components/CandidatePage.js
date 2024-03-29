@@ -61,6 +61,11 @@ function CandidatePage({ setPageTitle }) {
         setSelectedCandidate(null);
     };
 
+    const considerCandidate = (candidate) => {
+        // Здесь добавим логику для рассмотрения кандидата на вакансию
+        console.log('Рассмотрение кандидата:', candidate);
+    };
+
     const filteredCandidates = candidates.filter(candidate => {
         const fullName = `${candidate.firstName} ${candidate.lastName}`.toLowerCase();
         return fullName.includes(searchTerm.toLowerCase());
@@ -105,7 +110,7 @@ function CandidatePage({ setPageTitle }) {
                 onRequestClose={closeCandidateCard}
                 contentLabel="Карточка кандидата"
             >
-                {selectedCandidate && <CandidateCard candidate={selectedCandidate} onClose={closeCandidateCard} />}
+                {selectedCandidate && <CandidateCard candidate={selectedCandidate} onClose={closeCandidateCard} onConsider={considerCandidate} />}
             </Modal>
         </div>
     );

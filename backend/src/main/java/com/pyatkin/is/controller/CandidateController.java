@@ -1,7 +1,11 @@
 package com.pyatkin.is.controller;
 
 import com.pyatkin.is.models.Candidate;
+
+import com.pyatkin.is.models.Skills;
 import com.pyatkin.is.repository.CandidateRepository;
+
+import com.pyatkin.is.repository.SkillsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
@@ -26,10 +30,12 @@ import java.util.Optional;
 public class CandidateController {
 
     private final CandidateRepository candidateRepository;
+    private final SkillsRepository skillsRepository;
 
     @Autowired
-    public CandidateController(CandidateRepository candidateRepository) {
+    public CandidateController(CandidateRepository candidateRepository, SkillsRepository skillsRepository) {
         this.candidateRepository = candidateRepository;
+        this.skillsRepository = skillsRepository;
     }
 
     @GetMapping
@@ -91,6 +97,22 @@ public class CandidateController {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+
+    @GetMapping("/{candidateId}/skills")
+    public ResponseEntity<List<Skills>> getCandidateSkills(@PathVariable Long candidateId) {
+        Optional<Candidate> candidateOptional = candidateRepository.findById(candidateId);
+        if (candidateOptional.isPresent()) {
+            Candidate candidate = candidateOptional.get();
+            List<Skills> skills = skillsRepository.findAllByCandidates(candidate);
+            /*List<CandidateSkills> skillsId = candidateSkillsRepository.findAllByCandidate(candidate);
+            List<Skills> skills = skillsId.stream().map(CandidateSkills::getSkills).toList();*/
+            //Set<Skills> candidateSkills = skillsRepository.findAllBySkillsIdIn(skillsId);
+            return new ResponseEntity<>(skills, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
