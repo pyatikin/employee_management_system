@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,10 +33,26 @@ public class CandidateController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Candidate>> getAllCandidates() {
-        List<Candidate> candidates = candidateRepository.findAll();
-        return ResponseEntity.ok(candidates);
+    public ResponseEntity<List<Candidate>> searchCandidates(
+            @RequestParam(name = "skillIds",required = false) List<Long> skillIds) {
+        try {
+            List<Candidate> candidates;
+
+            // Если навыки указаны, выполняем поиск кандидатов по имени и выбранным навыкам
+            if (skillIds != null && !skillIds.isEmpty()) {
+                candidates = candidateRepository.findAllBySkillsIn(skillIds);
+            } else {
+                // В противном случае выполняем поиск
+                candidates = candidateRepository.findAll();
+            }
+
+            return new ResponseEntity<>(candidates, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+
 
     @GetMapping("/{candidateId}")
     public ResponseEntity<Candidate> getCandidateById(@PathVariable Long candidateId) {

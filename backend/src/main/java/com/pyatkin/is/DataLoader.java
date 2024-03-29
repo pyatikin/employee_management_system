@@ -58,25 +58,66 @@ public class DataLoader implements CommandLineRunner {
         vacancyRepository.save(financeVacancy);
 
         // Добавление тестовых данных для кандидатов, скиллов и резюме
-        Candidate candidate = new Candidate();
-        candidate.setFirstName("Иван");
-        candidate.setLastName("Иванов");
-        candidate.setEmail("ivan@example.com");
+        Candidate candidate1 = new Candidate();
+        candidate1.setFirstName("Иван");
+        candidate1.setLastName("Иванов");
+        candidate1.setEmail("ivan@example.com");
 
-        Resume resume = new Resume();
-        resume.setPosition("Java Developer");
-        resume.setContent("Experienced Java Developer with strong knowledge of Spring Framework.");
-        resumeRepository.save(resume);
+        Resume resume1 = new Resume();
+        resume1.setPosition("Java Developer");
+        resume1.setContent("Experienced Java Developer with strong knowledge of Spring Framework.");
+        resumeRepository.save(resume1);
 
-        Skills skills = new Skills();
-        skills.setName("Java");
-        skills.setDescription("Proficient in Java programming language.");
-        skillsRepository.save(skills);
+        Skills skills1 = new Skills();
+        skills1.setName("Java");
+        skills1.setDescription("Proficient in Java programming language.");
+        skillsRepository.save(skills1);
 
-        candidate.getResumes().add(resume);
-        candidate.getSkills().add(skills);
+        candidate1.getResumes().add(resume1);
+        candidate1.getSkills().add(skills1);
 
-        candidateRepository.save(candidate);
+        candidateRepository.save(candidate1);
+
+        Candidate candidate2 = new Candidate();
+        candidate2.setFirstName("Петр");
+        candidate2.setLastName("Петров");
+        candidate2.setEmail("petr@example.com");
+
+        Resume resume2 = new Resume();
+        resume2.setPosition("Frontend Developer");
+        resume2.setContent("Skilled Frontend Developer with expertise in React.js and Vue.js.");
+        resumeRepository.save(resume2);
+
+        Skills skills2 = new Skills();
+        skills2.setName("React.js");
+        skills2.setDescription("Proficient in React.js framework.");
+        skillsRepository.save(skills2);
+
+        candidate2.getResumes().add(resume2);
+        candidate2.getSkills().add(skills2);
+
+        candidateRepository.save(candidate2);
+
+        Candidate candidate3 = new Candidate();
+        candidate3.setFirstName("Анна");
+        candidate3.setLastName("Сидорова");
+        candidate3.setEmail("anna@example.com");
+
+        Resume resume3 = new Resume();
+        resume3.setPosition("Data Scientist");
+        resume3.setContent("Experienced Data Scientist with expertise in machine learning and data analysis.");
+        resumeRepository.save(resume3);
+
+        Skills skills3 = new Skills();
+        skills3.setName("Machine Learning");
+        skills3.setDescription("Skilled in machine learning algorithms and techniques.");
+        skillsRepository.save(skills3);
+
+        candidate3.getResumes().add(resume3);
+        candidate3.getSkills().add(skills3);
+
+        candidateRepository.save(candidate3);
     }
+
 
 }
