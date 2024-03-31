@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import ViewVacancyDialog from './ViewVacancyDialog';
-import CreateVacancyDialog from './CreateVacancyDialog';
+import ViewVacancyInWorkDialog from './ViewVacancyInWorkDialog';
 import ChangeVacancyStatusDialog from './ChangeVacancyStatusDialog';
 
 function WorkingVacancies({ setPageTitle }) {
     const [vacancies, setVacancies] = useState([]);
     const [selectedVacancy, setSelectedVacancy] = useState(null);
     const [isViewDialogOpen, setViewDialogOpen] = useState(false);
-    const [isCreateDialogOpen, setCreateDialogOpen] = useState(false);
     const [isChangeStatusDialogOpen, setChangeStatusDialogOpen] = useState(false);
     const [selectedVacancyId, setSelectedVacancyId] = useState(null);
 
@@ -32,13 +29,9 @@ function WorkingVacancies({ setPageTitle }) {
         setViewDialogOpen(true);
     };
 
-    const openCreateDialog = () => {
-        setCreateDialogOpen(true);
-    };
 
     const handleCloseDialog = () => {
         setViewDialogOpen(false);
-        setCreateDialogOpen(false);
         setChangeStatusDialogOpen(false);
         fetchVacancies();
     };
@@ -65,7 +58,6 @@ function WorkingVacancies({ setPageTitle }) {
     return (
         <div>
             <h2>Список вакансий в работе</h2>
-            <Link to="#" onClick={openCreateDialog}>Создать новую вакансию</Link>
             <table>
                 <thead>
                 <tr>
@@ -80,8 +72,7 @@ function WorkingVacancies({ setPageTitle }) {
                 </tbody>
             </table>
 
-            {isViewDialogOpen && <ViewVacancyDialog vacancy={selectedVacancy} onClose={handleCloseDialog} />}
-            {isCreateDialogOpen && <CreateVacancyDialog onCreate={handleCloseDialog} onClose={handleCloseDialog} />}
+            {isViewDialogOpen && <ViewVacancyInWorkDialog vacancy={selectedVacancy} onClose={handleCloseDialog} />}
             {isChangeStatusDialogOpen && (
                 <ChangeVacancyStatusDialog vacancyId={selectedVacancyId} onClose={handleCloseDialog} fetchVacancies={fetchVacancies} />
             )}
