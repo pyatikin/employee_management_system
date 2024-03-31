@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Vacancy")
@@ -40,8 +43,8 @@ public class Vacancy {
     @Column(name = "HiringDeadline", nullable = false)
     private LocalDate hiringDeadline;
 
-    @Column(name = "Candidate", unique = true)
-    private String candidate;
+    @OneToMany(mappedBy = "vacancy", fetch = FetchType.LAZY)
+    private List<Interview> interviews = new ArrayList<>();
 
     @Transient
     private Long departmentId; // Временное поле для хранения идентификатора департамента

@@ -9,12 +9,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -35,6 +38,9 @@ public class Candidate {
 
     @Column(name = "Email", unique = true, nullable = false)
     private String email;
+
+    @OneToMany(mappedBy = "candidate", fetch = FetchType.LAZY)
+    private List<Interview> interviews = new ArrayList<>();
 
     // Геттеры и сеттеры
 

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import VacancyInWorkList from './VacancyInWorkList'; // Подключаем компонент списка вакансий
 
 function CandidateCard({ candidate, onClose }) {
     const [candidateSkills, setCandidateSkills] = useState([]);
+    const [showVacancyList, setShowVacancyList] = useState(false); // Состояние для отображения списка вакансий
+    const [selectedVacancy, setSelectedVacancy] = useState(null); // Выбранная вакансия
 
     useEffect(() => {
         fetchCandidateSkills();
@@ -18,8 +21,15 @@ function CandidateCard({ candidate, onClose }) {
     };
 
     const handleConsider = () => {
+        // Показываем список вакансий при нажатии на кнопку "Рассмотреть на вакансию"
+        setShowVacancyList(true);
+    };
+
+    const handleVacancySelect = (vacancy) => {
+        // Обработка выбора вакансии
+        setSelectedVacancy(vacancy);
         // Дополните этот метод в соответствии с вашими требованиями
-        console.log('Consider candidate for vacancy');
+        console.log('Consider candidate for vacancy:', vacancy);
     };
 
     return (
@@ -34,6 +44,10 @@ function CandidateCard({ candidate, onClose }) {
             </ul>
             <button onClick={handleConsider}>Рассмотреть на вакансию</button>
             <button onClick={onClose}>Close</button>
+
+            {showVacancyList && (
+                <VacancyInWorkList onSelect={handleVacancySelect} candidateId={candidate.candidateId} />
+            )}
         </div>
     );
 }
