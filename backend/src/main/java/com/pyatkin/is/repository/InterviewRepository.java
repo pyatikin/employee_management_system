@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface InterviewRepository extends JpaRepository<Interview, Long> {
     List<Interview> findAllByVacancy(Vacancy vacancies);
+    Interview findByCandidateAndVacancy(Candidate candidate, Vacancy vacancy);
 }

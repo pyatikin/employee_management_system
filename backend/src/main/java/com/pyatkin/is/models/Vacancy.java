@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,11 +31,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 /*@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "vacancyId", scope=Vacancy.class)*/
+        property = "vacancyId")*/
 public class Vacancy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "VacancyId", nullable = false)
     private Long vacancyId;
 
     @Column(name = "Name", nullable = false)
@@ -51,7 +51,8 @@ public class Vacancy {
 
     @OneToMany(mappedBy = "vacancy", fetch = FetchType.LAZY)
     //@JsonBackReference("vacancies")
-    @JsonIgnore
+    //@JsonIgnore
+    //@JsonManagedReference("vacancies")
     private List<Interview> interviews = new ArrayList<>();
 
     @Transient
@@ -59,12 +60,12 @@ public class Vacancy {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DepartmentId", referencedColumnName = "departmentId", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Department department;
 
     @ManyToOne(fetch = FetchType.LAZY) // Ленивая загрузка, чтобы избежать избыточных запросов
     @JoinColumn(name = "stageId", referencedColumnName = "stageId", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private HiringStage stageId; // Связь с таблицей HiringStage по полю hiringStageId
 
     // Геттеры и сеттеры

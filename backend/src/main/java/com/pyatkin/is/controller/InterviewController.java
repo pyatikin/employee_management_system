@@ -67,5 +67,26 @@ public class InterviewController {
         }
     }
 
+    @GetMapping("/{vacancyId}/candidates/{candidateId}")
+    public ResponseEntity<Interview> getInterviewForCandidateAndVacancy(@PathVariable Long candidateId, @PathVariable Long vacancyId) {
+        try {
+            Candidate candidate = candidateRepository.findById(candidateId)
+                    .orElseThrow(() -> new EntityNotFoundException("Candidate not found with id: " + candidateId));
+
+            Vacancy vacancy = vacancyRepository.findById(vacancyId)
+                    .orElseThrow(() -> new EntityNotFoundException("Vacancy not found with id: " + vacancyId));
+
+            Interview interview = interviewRepository.findByCandidateAndVacancy(candidate, vacancy);
+
+            return ResponseEntity.ok(interview);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+
     // Другие методы для работы с таблицей Interview (создание, получение, обновление и т.д.)
 }
