@@ -34,6 +34,7 @@ function CandidateCard({ candidate, onClose }) {
 
     return (
         <div className="candidate-card-modal">
+            <span className="close" onClick={onClose}>&times;</span>
             <h2>{candidate.firstName} {candidate.lastName}</h2>
             <p>Email: {candidate.email}</p>
             <h3>Навыки:</h3>
@@ -43,7 +44,6 @@ function CandidateCard({ candidate, onClose }) {
                 ))}
             </ul>
             <button onClick={handleConsider}>Рассмотреть на вакансию</button>
-            <button onClick={onClose}>Close</button>
 
             {showVacancyList && (
                 <VacancyInWorkList onSelect={handleVacancySelect} candidateId={candidate.candidateId} />

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import ViewVacancyDialog from './ViewVacancyDialog';
 import CreateVacancyDialog from './CreateVacancyDialog';
 
-function OpenVacancies({ setPageTitle }) {
+function OpenVacancies({ setPageTitle, onClose }) {
     const [vacancies, setVacancies] = useState([]);
     const [selectedVacancy, setSelectedVacancy] = useState(null);
     const [isViewDialogOpen, setViewDialogOpen] = useState(false);
