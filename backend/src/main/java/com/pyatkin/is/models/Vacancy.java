@@ -1,6 +1,10 @@
 package com.pyatkin.is.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,6 +29,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/*@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "vacancyId", scope=Vacancy.class)*/
 public class Vacancy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +50,8 @@ public class Vacancy {
     private LocalDate hiringDeadline;
 
     @OneToMany(mappedBy = "vacancy", fetch = FetchType.LAZY)
+    //@JsonBackReference("vacancies")
+    @JsonIgnore
     private List<Interview> interviews = new ArrayList<>();
 
     @Transient

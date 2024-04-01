@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:8081")
@@ -50,6 +51,19 @@ public class InterviewController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add candidate to interview: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/{vacancyId}/candidates")
+    public ResponseEntity<List<Candidate>> getCandidatesForVacancy(@PathVariable Long vacancyId) {
+        try {
+            Vacancy vacancies = vacancyRepository.findById(vacancyId).orElseThrow();
+            List<Interview> interviews = interviewRepository.findAllByVacancy(vacancies);// Получаем список кандидатов на собеседование для указанной вакансии
+
+            List<Candidate> candidates = interviews.stream().map(Interview::getCandidate).toList();
+            return ResponseEntity.ok(candidates);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 

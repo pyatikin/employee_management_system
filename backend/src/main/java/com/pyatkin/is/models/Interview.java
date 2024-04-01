@@ -1,5 +1,9 @@
 package com.pyatkin.is.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,6 +22,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/*@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "interviewId", scope=Interview.class)*/
 public class Interview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,10 +40,12 @@ public class Interview {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "candidateId", referencedColumnName = "candidateId")
+    //@JsonManagedReference("candidates")
     private Candidate candidate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vacancyId", referencedColumnName = "vacancyId")
+    //@JsonManagedReference("vacancies")
     private Vacancy vacancy;
 
     // Геттеры и сеттеры

@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ViewVacancyInWorkDialog from './ViewVacancyInWorkDialog';
 import ChangeVacancyStatusDialog from './ChangeVacancyStatusDialog';
+import ViewCandidatesInInterviewDialog from './ViewCandidatesInInterviewDialog';
 
 function WorkingVacancies({ setPageTitle }) {
-    const [vacancies, setVacancies] = useState([]);
+    const [workingVacancies, setWorkingVacancies] = useState([]);
     const [selectedVacancy, setSelectedVacancy] = useState(null);
-    const [isViewDialogOpen, setViewDialogOpen] = useState(false);
+    const [isViewVacancyDialogOpen, setViewVacancyDialogOpen] = useState(false);
     const [isChangeStatusDialogOpen, setChangeStatusDialogOpen] = useState(false);
     const [selectedVacancyId, setSelectedVacancyId] = useState(null);
+    const [isViewCandidatesDialogOpen, setViewCandidatesDialogOpen] = useState(false);
 
     useEffect(() => {
         setPageTitle("Вакансии в работе");
@@ -18,21 +20,21 @@ function WorkingVacancies({ setPageTitle }) {
     const fetchVacancies = async () => {
         try {
             const response = await axios.get('http://localhost:8080/vacancies/working-vacancies');
-            setVacancies(response.data);
+            setWorkingVacancies(response.data);
         } catch (error) {
             console.error('Error fetching working vacancies:', error);
         }
     };
 
-    const openViewDialog = vacancy => {
+    const openViewVacancyDialog = vacancy => {
         setSelectedVacancy(vacancy);
-        setViewDialogOpen(true);
+        setViewVacancyDialogOpen(true);
     };
 
-
     const handleCloseDialog = () => {
-        setViewDialogOpen(false);
+        setViewVacancyDialogOpen(false);
         setChangeStatusDialogOpen(false);
+        setViewCandidatesDialogOpen(false);
         fetchVacancies();
     };
 
@@ -41,15 +43,21 @@ function WorkingVacancies({ setPageTitle }) {
         setChangeStatusDialogOpen(true);
     };
 
+    const openCandidatesDialog = vacancy => {
+        setSelectedVacancy(vacancy);
+        setViewCandidatesDialogOpen(true);
+    };
+
     const renderVacancyRow = vacancy => {
         return (
             <tr key={vacancy.vacancyId}>
                 <td>{vacancy.name}</td>
-                <td>{vacancy.department.name}</td>
+                <td>{vacancy.department ? vacancy.department.name : 'Не указан'}</td>
                 <td>{vacancy.salary}</td>
                 <td>
-                    <button onClick={() => openViewDialog(vacancy)}>Просмотр</button>
+                    <button onClick={() => openViewVacancyDialog(vacancy)}>Просмотр</button>
                     <button onClick={() => openChangeStatusDialog(vacancy.vacancyId)}>Изменить статус</button>
+                    <button onClick={() => openCandidatesDialog(vacancy)}>Просмотр кандидатов</button>
                 </td>
             </tr>
         );
@@ -68,14 +76,15 @@ function WorkingVacancies({ setPageTitle }) {
                 </tr>
                 </thead>
                 <tbody>
-                {vacancies.map(renderVacancyRow)}
+                {workingVacancies.map(renderVacancyRow)}
                 </tbody>
             </table>
 
-            {isViewDialogOpen && <ViewVacancyInWorkDialog vacancy={selectedVacancy} onClose={handleCloseDialog} />}
+            {isViewVacancyDialogOpen && <ViewVacancyInWorkDialog vacancy={selectedVacancy} onClose={handleCloseDialog} />}
             {isChangeStatusDialogOpen && (
                 <ChangeVacancyStatusDialog vacancyId={selectedVacancyId} onClose={handleCloseDialog} fetchVacancies={fetchVacancies} />
             )}
+            {isViewCandidatesDialogOpen && <ViewCandidatesInInterviewDialog vacancy={selectedVacancy} onClose={handleCloseDialog} />}
         </div>
     );
 }
