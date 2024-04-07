@@ -39,13 +39,19 @@ public class VacancyController {
 
     // Получение всех вакансий
     @GetMapping
-    public ResponseEntity<List<Vacancy>> getAllVacancies() {
+    public ResponseEntity<List<Vacancy>> getOpenVacancies() {
         List<Vacancy> vacancies = vacancyRepository.findAllByStageId(hiringStageRepository.findByName("открыта"));
         return new ResponseEntity<>(vacancies, HttpStatus.OK);
     }
     @GetMapping({"/working-vacancies"})
     public ResponseEntity<List<Vacancy>> getInWork() {
         List<Vacancy> vacancies = vacancyRepository.findAllByStageId(hiringStageRepository.findByName("в работе"));
+        return new ResponseEntity<>(vacancies, HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Vacancy>> getAllVacancies() {
+        List<Vacancy> vacancies = vacancyRepository.findAll();
         return new ResponseEntity<>(vacancies, HttpStatus.OK);
     }
 
