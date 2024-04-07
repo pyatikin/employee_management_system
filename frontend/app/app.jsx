@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {BrowserRouter as Router, NavLink, Route, Routes} from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Home from './components/Home';
 import About from './components/Page';
@@ -10,6 +10,7 @@ import Applicants from './components/CandidatePage';
 import Reports from './components/Reports';
 import RecruitmentReport from './components/RecruitmentReport';
 import LoginPage from "./components/LoginPage";
+import VacancyStatusReport from "./components/VacancyStatusReport";
 
 function App() {
     const [pageTitle, setPageTitle] = React.useState("Главная");
@@ -34,6 +35,7 @@ function App() {
                         <Route path="/documents" element={<Documents setPageTitle={setPageTitle} title="Документы" />} />
                         <Route path="/reports" element={<Reports setPageTitle={setPageTitle} setPageLinks={setPageLinks} title="Отчеты" />} />
                         <Route path="/reports/recruitment" element={<RecruitmentReport />} />
+                        <Route path="/reports/vacancy-status" element={<VacancyStatusReport />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="*" element={<Home setPageTitle={setPageTitle} />} />
                     </Routes>

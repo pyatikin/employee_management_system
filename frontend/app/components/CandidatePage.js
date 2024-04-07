@@ -3,6 +3,7 @@ import axios from 'axios';
 import Select from 'react-select';
 import Modal from 'react-modal';
 import CandidateCard from './CandidateCard';
+import AddCandidateForm from './AddCandidateForm'; // Импортируем компонент AddCandidateForm
 
 function CandidatePage({ setPageTitle }) {
     const [candidates, setCandidates] = useState([]);
@@ -10,6 +11,7 @@ function CandidatePage({ setPageTitle }) {
     const [skillsOptions, setSkillsOptions] = useState([]);
     const [selectedSkills, setSelectedSkills] = useState([]);
     const [selectedCandidate, setSelectedCandidate] = useState(null);
+    const [isAddCandidateModalOpen, setAddCandidateModalOpen] = useState(false); // Состояние модального окна для добавления кандидата
 
     useEffect(() => {
         setPageTitle("Соискатели");
@@ -61,8 +63,11 @@ function CandidatePage({ setPageTitle }) {
         setSelectedCandidate(null);
     };
 
+    const toggleAddCandidateModal = () => {
+        setAddCandidateModalOpen(!isAddCandidateModalOpen);
+    };
+
     const considerCandidate = (candidate) => {
-        // Здесь добавим логику для рассмотрения кандидата на вакансию
         console.log('Рассмотрение кандидата:', candidate);
     };
 
@@ -74,6 +79,7 @@ function CandidatePage({ setPageTitle }) {
     return (
         <div>
             <h2>Соискатели</h2>
+            <button onClick={toggleAddCandidateModal}>Добавить кандидата</button> {/* Кнопка для открытия модального окна */}
             <input
                 type="text"
                 placeholder="Поиск по имени"
@@ -111,6 +117,14 @@ function CandidatePage({ setPageTitle }) {
                 contentLabel="Карточка кандидата"
             >
                 {selectedCandidate && <CandidateCard candidate={selectedCandidate} onClose={closeCandidateCard} onConsider={considerCandidate} />}
+            </Modal>
+            <Modal
+                isOpen={isAddCandidateModalOpen}
+                onRequestClose={toggleAddCandidateModal}
+                contentLabel="Добавление кандидата"
+            >
+                {/* Передаем fetchCandidates в AddCandidateForm */}
+                <AddCandidateForm onClose={toggleAddCandidateModal} fetchCandidates={fetchCandidates} />
             </Modal>
         </div>
     );
