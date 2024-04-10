@@ -33,9 +33,14 @@ public class ReportsController {
     public ResponseEntity<List<VacancyStatusReportItem>> getVacancyStatusReport() {
         List<HiringStage> stages = hiringStageRepository.findAll();
         List<VacancyStatusReportItem> reportItems = new ArrayList<>();
+        Long all = 0L;
         for (HiringStage stage: stages) {
             Long count = vacancyRepository.countVacanciesByStageId(stage);
-            reportItems.add(new VacancyStatusReportItem(stage.getName(), count));
+            all += count;
+            reportItems.add(new VacancyStatusReportItem(stage.getName(), count, 0));
+        }
+        for (VacancyStatusReportItem item: reportItems) {
+            item.setRelativeCount(1.0*item.getCount()/all);
         }
 
         return new ResponseEntity<>(reportItems, HttpStatus.OK);

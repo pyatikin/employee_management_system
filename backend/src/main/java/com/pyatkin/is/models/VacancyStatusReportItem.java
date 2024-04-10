@@ -9,6 +9,7 @@ import lombok.Data;
 public class VacancyStatusReportItem {
     private String stage;
     private Long count;
+    private double relativeCount;
 
     // конструктор, геттеры и сеттеры
 }

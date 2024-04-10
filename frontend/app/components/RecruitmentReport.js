@@ -22,7 +22,7 @@ function RecruitmentReport() {
 
     const fetchRecruitmentReport = async (vacancyId) => {
         try {
-            const response = await axios.get(`http://localhost:8080/recruitment-report/${vacancyId}`);
+            const response = await axios.get(`http://localhost:8080/reports/recrutment/${vacancyId}`);
             setReportData(response.data);
         } catch (error) {
             console.error('Error fetching recruitment report:', error);
