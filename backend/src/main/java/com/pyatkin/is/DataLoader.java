@@ -45,21 +45,26 @@ public class DataLoader implements CommandLineRunner {
 
         Department itDepartment = new Department(1L, "ИТ", "ИТ");
         Department officeDepartment = new Department(2L, "Офис", "Офис");
+        Department salesDepartment = new Department(3L, "Отдел продаж", "Отдел продаж");
 
         departmentRepository.save(itDepartment);
         departmentRepository.save(officeDepartment);
+        departmentRepository.save(salesDepartment);
 
-        Vacancy itVacancy = new Vacancy(1L, "Инженер-программист", "Разработка новых функций для флагманского продукта компании", 50000.0, LocalDate.parse("2024-04-30"), null, null, itDepartment, open, null);
-        Vacancy marketingVacancy = new Vacancy(2L, "Маркетолог", "Создание и управление маркетинговыми кампаниями", 45000.0, LocalDate.parse("2024-04-25"), null, null, officeDepartment, open, null);
-        Vacancy financeVacancy = new Vacancy(3L, "Финансовый аналитик", "Анализ финансовых данных и предоставление инсайтов", 55000.0, LocalDate.parse("2024-05-10"), null, null, itDepartment, open, null);
-        Vacancy okWork = new Vacancy(4L, "Работа", "нужно работать", 123.0, LocalDate.parse("2024-05-10"), null, null, itDepartment, work, LocalDate.now());
-        Vacancy notWork = new Vacancy(5L, "Не работа", "Не нужно работать", 0.0, LocalDate.parse("2024-05-10"), null, null, officeDepartment, work, LocalDate.now());
+        Vacancy itVacancy = new Vacancy(1L, "Инженер-программист", "Разработка новых функций для флагманского продукта компании", 50000.0, LocalDate.parse("2024-04-30"), "1 год", null, null, itDepartment, open, LocalDate.now());
+        Vacancy marketingVacancy = new Vacancy(2L, "Маркетолог", "Создание и управление маркетинговыми кампаниями", 45000.0, LocalDate.parse("2024-04-25"), "2 года", null, null, officeDepartment, open, LocalDate.now());
+        Vacancy financeVacancy = new Vacancy(3L, "Финансовый аналитик", "Анализ финансовых данных и предоставление инсайтов", 55000.0, LocalDate.parse("2024-05-10"),"1 год", null, null, itDepartment, open, LocalDate.now());
+
+        Vacancy designVacancy = new Vacancy(4L, "Дизайнер", "Разработка дизайна пользовательского интерфейса", 48000.0, LocalDate.parse("2024-04-28"), "2 года", null, null, itDepartment, work, LocalDate.now());
+        Vacancy hrVacancy = new Vacancy(5L, "HR-специалист", "Подбор персонала и организация процессов трудоустройства", 46000.0, LocalDate.parse("2024-05-05"), "1 год", null, null, officeDepartment, work, LocalDate.now());
+        Vacancy salesVacancy = new Vacancy(6L, "Менеджер по продажам", "Продвижение продуктов компании и увеличение объема продаж", 52000.0, LocalDate.parse("2024-05-15"), "1 год", null, null, salesDepartment, work, LocalDate.now());
 
         vacancyRepository.save(itVacancy);
         vacancyRepository.save(marketingVacancy);
         vacancyRepository.save(financeVacancy);
-        vacancyRepository.save(okWork);
-        vacancyRepository.save(notWork);
+        vacancyRepository.save(designVacancy);
+        vacancyRepository.save(hrVacancy);
+        vacancyRepository.save(salesVacancy);
 
         // Добавление тестовых данных для кандидатов, скиллов и резюме
         Candidate candidate1 = new Candidate();

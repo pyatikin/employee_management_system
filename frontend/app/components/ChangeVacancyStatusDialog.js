@@ -45,7 +45,7 @@ function ChangeVacancyStatusDialog({vacancyId, onClose, fetchVacancies}) {
                 <h2></h2>
                 <div className="button-group">
                     <button type="submit" className="create-button">Изменить</button>
-                    <button type="button" className="red-button" onClick={onClose}>Отмена</button>
+                    <button type="button" className="cancel-button" onClick={onClose}>Отмена</button>
                 </div>
             </form>
         </div>

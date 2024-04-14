@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 
-function CreateVacancyDialog({ onCreate, onClose, updateVacancies }) {
+function CreateVacancyDialog({onCreate, onClose, updateVacancies}) {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [salary, setSalary] = useState('');
     const [hiringDeadline, setHiringDeadline] = useState('');
     const [departmentId, setDepartmentId] = useState('');
     const [departments, setDepartments] = useState([]);
+    const [experience, setExperience] = useState(''); // Добавляем состояние для опыта
+    const [startDate, setStartDate] = useState(''); // Добавляем состояние для даты начала
 
     useEffect(() => {
         const fetchDepartments = async () => {
@@ -30,11 +32,13 @@ function CreateVacancyDialog({ onCreate, onClose, updateVacancies }) {
                 description,
                 salary,
                 hiringDeadline,
-                departmentId // Передаем сразу идентификатор департамента
+                departmentId,
+                experience, // Отправляем новое поле опыта
+                startDate // Отправляем новое поле даты начала
             });
             onCreate(response.data);
-            onClose(); // Закрываем форму после успешного создания вакансии
-            updateVacancies(); // Обновляем список вакансий
+            onClose();
+            updateVacancies();
         } catch (error) {
             console.error('Error creating vacancy:', error);
         }
@@ -51,9 +55,16 @@ function CreateVacancyDialog({ onCreate, onClose, updateVacancies }) {
                     <label htmlFor="description">Описание:</label>
                     <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} required />
 
+                    <label htmlFor="experience">Опыт:</label>
+                    <input type="text" id="experience" value={experience}
+                           onChange={(e) => setExperience(e.target.value)} required/>
+
                     <label htmlFor="salary">Зарплата:</label>
                     <input type="number" id="salary" value={salary} onChange={(e) => setSalary(e.target.value)} required />
 
+                    <label htmlFor="startDate">Дата начала:</label>
+                    <input type="date" id="startDate" value={startDate} onChange={(e) => setStartDate(e.target.value)}
+                           required/>
                     <label htmlFor="hiringDeadline">Крайний срок:</label>
                     <input type="date" id="hiringDeadline" value={hiringDeadline} onChange={(e) => setHiringDeadline(e.target.value)} required />
 

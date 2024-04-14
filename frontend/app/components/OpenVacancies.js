@@ -73,9 +73,9 @@ function OpenVacancies({ setPageTitle, onClose }) {
     };
 
     return (
-        <div>
+        <div className="container">
             <h2>Список вакансий</h2>
-            <Link to="#" onClick={openCreateDialog}>Создать новую вакансию</Link>
+            <Link to="#" className="create-button" onClick={openCreateDialog}>Создать новую вакансию</Link>
             <table>
                 <thead>
                 <tr>
