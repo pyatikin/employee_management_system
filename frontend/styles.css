@@ -170,3 +170,23 @@ button.menu-button {
     text-decoration: none;
     cursor: pointer;
 }
+
+
+.form-group {
+    margin-bottom: 20px; /* Добавляем отступ снизу для каждой группы элементов */
+}
+
+label {
+    margin-bottom: 5px; /* Добавляем отступ снизу для каждого заголовка */
+}
+
+input[type="text"],
+input[type="email"],
+textarea,
+.Select {
+    margin-bottom: 10px; /* Добавляем отступ снизу для каждого ввода */
+}
+
+button {
+    margin-right: 10px; /* Добавляем отступ справа для кнопок */
+}

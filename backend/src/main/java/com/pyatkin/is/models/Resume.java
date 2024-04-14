@@ -27,7 +27,7 @@ public class Resume {
     @Column(name = "Position", nullable = false)
     private String position;
 
-    @Column(name = "Content", nullable = false)
+    @Column(name = "Content", nullable = false, length = 2000)
     private String content;
 
     // Геттеры и сеттеры

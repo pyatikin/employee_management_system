@@ -68,13 +68,16 @@ public class DataLoader implements CommandLineRunner {
         candidate1.setEmail("ivan@example.com");
 
         Resume resume1 = new Resume();
-        resume1.setPosition("Java Developer");
-        resume1.setContent("Experienced Java Developer with strong knowledge of Spring Framework.");
+        resume1.setPosition("Java Разработчик");
+        resume1.setContent("Опытный Java Разработчик с глубокими знаниями Spring Framework. " +
+                "Работал над несколькими проектами на корпоративном уровне. Владеет разработкой RESTful API " +
+                "и управлением баз данных с использованием SQL и NoSQL баз данных.");
         resumeRepository.save(resume1);
 
         Skills skills1 = new Skills();
         skills1.setName("Java");
-        skills1.setDescription("Proficient in Java programming language.");
+        skills1.setDescription("Владение языком программирования Java. Опыт работы с Spring Framework " +
+                "для разработки бэкенд приложений. Знаком с Hibernate ORM для взаимодействия с базами данных.");
         skillsRepository.save(skills1);
 
         candidate1.getResumes().add(resume1);
@@ -88,13 +91,16 @@ public class DataLoader implements CommandLineRunner {
         candidate2.setEmail("petr@example.com");
 
         Resume resume2 = new Resume();
-        resume2.setPosition("Frontend Developer");
-        resume2.setContent("Skilled Frontend Developer with expertise in React.js and Vue.js.");
+        resume2.setPosition("Фронтенд Разработчик");
+        resume2.setContent("Опытный Фронтенд Разработчик с экспертизой в React.js и Vue.js. " +
+                "Работал над различными веб-приложениями от интернет-магазинов до социальных сетей. " +
+                "Владеет навыками адаптивного дизайна и принципами UI/UX.");
         resumeRepository.save(resume2);
 
         Skills skills2 = new Skills();
         skills2.setName("React.js");
-        skills2.setDescription("Proficient in React.js framework.");
+        skills2.setDescription("Владение фреймворком React.js. Опыт работы со стейт-менеджментом " +
+                "с использованием Redux и context API. Знание компонентной архитектуры.");
         skillsRepository.save(skills2);
 
         candidate2.getResumes().add(resume2);
@@ -108,19 +114,25 @@ public class DataLoader implements CommandLineRunner {
         candidate3.setEmail("anna@example.com");
 
         Resume resume3 = new Resume();
-        resume3.setPosition("Data Scientist");
-        resume3.setContent("Experienced Data Scientist with expertise in machine learning and data analysis.");
+        resume3.setPosition("Специалист по Обработке Данных");
+        resume3.setContent("Опытный Специалист по Обработке Данных с экспертизой в машинном обучении и анализе данных. " +
+                "Работал над различными проектами, включая прогнозирование, обработку естественного языка " +
+                "и компьютерное зрение. Владеет языком программирования Python и библиотеками, такими как " +
+                "TensorFlow, PyTorch и scikit-learn.");
         resumeRepository.save(resume3);
 
         Skills skills3 = new Skills();
-        skills3.setName("Machine Learning");
-        skills3.setDescription("Skilled in machine learning algorithms and techniques.");
+        skills3.setName("Машинное Обучение");
+        skills3.setDescription("Владение алгоритмами и методиками машинного обучения. " +
+                "Опыт работы с инженерией признаков, оценкой моделей и настройкой гиперпараметров. " +
+                "Знание глубоких архитектур и нейронных сетей.");
         skillsRepository.save(skills3);
 
         candidate3.getResumes().add(resume3);
         candidate3.getSkills().add(skills3);
 
         candidateRepository.save(candidate3);
+
     }
 
 

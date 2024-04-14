@@ -4,11 +4,13 @@ import VacancyInWorkList from './VacancyInWorkList'; // Подключаем к�
 
 function CandidateCard({ candidate, onClose }) {
     const [candidateSkills, setCandidateSkills] = useState([]);
+    const [candidateResumes, setCandidateResumes] = useState([]); // Состояние для хранения резюме кандидата
     const [showVacancyList, setShowVacancyList] = useState(false); // Состояние для отображения списка вакансий
     const [selectedVacancy, setSelectedVacancy] = useState(null); // Выбранная вакансия
 
     useEffect(() => {
         fetchCandidateSkills();
+        fetchCandidateResumes(); // Получаем резюме кандидата при загрузке компонента
     }, [candidate]);
 
     const fetchCandidateSkills = async () => {
@@ -17,6 +19,15 @@ function CandidateCard({ candidate, onClose }) {
             setCandidateSkills(response.data);
         } catch (error) {
             console.error('Error fetching candidate skills:', error);
+        }
+    };
+
+    const fetchCandidateResumes = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/candidates/${candidate.candidateId}/resumes`);
+            setCandidateResumes(response.data);
+        } catch (error) {
+            console.error('Error fetching candidate resumes:', error);
         }
     };
 
@@ -41,6 +52,12 @@ function CandidateCard({ candidate, onClose }) {
             <ul>
                 {candidateSkills.map(skill => (
                     <li key={skill.skillsId}>{skill.name}</li>
+                ))}
+            </ul>
+            <h3>Резюме:</h3>
+            <ul>
+                {candidateResumes.map(resume => (
+                    <li key={resume.resumeId}>{resume.content}</li>
                 ))}
             </ul>
             <button onClick={handleConsider}>Рассмотреть на вакансию</button>

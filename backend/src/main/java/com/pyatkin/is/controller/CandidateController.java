@@ -2,10 +2,16 @@ package com.pyatkin.is.controller;
 
 import com.pyatkin.is.models.Candidate;
 
+import com.pyatkin.is.models.CandidateRequest;
+import com.pyatkin.is.models.Resume;
 import com.pyatkin.is.models.Skills;
 import com.pyatkin.is.repository.CandidateRepository;
 
+import com.pyatkin.is.repository.ResumeRepository;
 import com.pyatkin.is.repository.SkillsRepository;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
@@ -31,25 +36,37 @@ public class CandidateController {
 
     private final CandidateRepository candidateRepository;
     private final SkillsRepository skillsRepository;
+    private final ResumeRepository resumeRepository;
 
     @Autowired
-    public CandidateController(CandidateRepository candidateRepository, SkillsRepository skillsRepository) {
+    public CandidateController(CandidateRepository candidateRepository, SkillsRepository skillsRepository, ResumeRepository resumeRepository) {
         this.candidateRepository = candidateRepository;
         this.skillsRepository = skillsRepository;
+        this.resumeRepository = resumeRepository;
     }
 
     @GetMapping
     public ResponseEntity<List<Candidate>> searchCandidates(
-            @RequestParam(name = "skillIds",required = false) List<Long> skillIds) {
+            @RequestParam(name = "skillIds", required = false) List<Long> skillIds) {
         try {
             List<Candidate> candidates;
 
             // Если навыки указаны, выполняем поиск кандидатов по имени и выбранным навыкам
             if (skillIds != null && !skillIds.isEmpty()) {
                 candidates = candidateRepository.findAllBySkillsIn(skillIds);
+                // Загружаем навыки и резюме для каждого кандидата
+                candidates.forEach(candidate -> {
+                    candidate.getSkills().size(); // Загружаем навыки
+                    candidate.getResumes().size(); // Загружаем резюме
+                });
             } else {
                 // В противном случае выполняем поиск
                 candidates = candidateRepository.findAll();
+                // Загружаем навыки и резюме для каждого кандидата
+                candidates.forEach(candidate -> {
+                    candidate.getSkills().size(); // Загружаем навыки
+                    candidate.getResumes().size(); // Загружаем резюме
+                });
             }
 
             return new ResponseEntity<>(candidates, HttpStatus.OK);
@@ -68,9 +85,37 @@ public class CandidateController {
     }
 
     @PostMapping
-    public ResponseEntity<Candidate> createCandidate(@RequestBody Candidate candidate) {
-        Candidate savedCandidate = candidateRepository.save(candidate);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedCandidate);
+    public ResponseEntity<Candidate> createCandidate(
+            @RequestBody CandidateRequest candidateRequest) {
+
+        try {
+            // Создание сущности кандидата
+            Candidate candidate = new Candidate();
+            candidate.setFirstName(candidateRequest.getFirstName());
+            candidate.setLastName(candidateRequest.getLastName());
+            candidate.setEmail(candidateRequest.getEmail());
+
+            // Создание резюме
+            Resume candidateResume = new Resume();
+            candidateResume.setPosition(candidateRequest.getResume().getPosition());
+            candidateResume.setContent(candidateRequest.getResume().getContent());
+            resumeRepository.save(candidateResume);
+
+
+            for (Long skillId: candidateRequest.getSkills()) {
+                candidate.getSkills().add(skillsRepository.findById(skillId).get());
+            }
+
+            // Связывание кандидата с резюме и навыком
+            candidate.getResumes().add(candidateResume);
+
+            // Сохранение кандидата
+            Candidate savedCandidate = candidateRepository.save(candidate);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedCandidate);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("/{candidateId}")
@@ -113,6 +158,23 @@ public class CandidateController {
             return new ResponseEntity<>(skills, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/{candidateId}/resumes")
+    public ResponseEntity<List<Resume>> getCandidateResumes(@PathVariable Long candidateId) {
+        try {
+            Optional<Candidate> candidateData = candidateRepository.findById(candidateId);
+
+            if (candidateData.isPresent()) {
+                Candidate candidate =  candidateData.get();
+                List<Resume>resumes = resumeRepository.findAllByCandidates(candidate);
+                return new ResponseEntity<>(resumes, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

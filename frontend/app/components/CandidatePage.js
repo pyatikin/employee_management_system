@@ -5,6 +5,7 @@ import Modal from 'react-modal';
 import CandidateCard from './CandidateCard';
 import AddCandidateForm from './AddCandidateForm'; // Импортируем компонент AddCandidateForm
 
+
 function CandidatePage({ setPageTitle }) {
     const [candidates, setCandidates] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
