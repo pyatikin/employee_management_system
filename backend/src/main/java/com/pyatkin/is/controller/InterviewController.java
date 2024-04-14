@@ -8,10 +8,16 @@ import com.pyatkin.is.repository.CandidateRepository;
 import com.pyatkin.is.repository.InterviewRepository;
 import com.pyatkin.is.repository.VacancyRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.chrono.ChronoLocalDate;
+import java.time.chrono.ChronoPeriod;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +25,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/interviews")
 public class InterviewController {
+
 
     private final InterviewRepository interviewRepository;
     private final VacancyRepository vacancyRepository;
@@ -85,6 +92,8 @@ public class InterviewController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+
 
 
 

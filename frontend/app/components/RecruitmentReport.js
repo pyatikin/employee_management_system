@@ -22,7 +22,7 @@ function RecruitmentReport() {
 
     const fetchRecruitmentReport = async (vacancyId) => {
         try {
-            const response = await axios.get(`http://localhost:8080/reports/recrutment/${vacancyId}`);
+            const response = await axios.get(`http://localhost:8080/reports/recruitment/${vacancyId}`);
             setReportData(response.data);
         } catch (error) {
             console.error('Error fetching recruitment report:', error);
@@ -49,7 +49,7 @@ function RecruitmentReport() {
             </div>
             {reportData && (
                 <div>
-                    <h3>Отчет по вакансии "{reportData.vacancy.name}"</h3>
+                    <h3>Отчет по вакансии "{vacancies.name}"</h3>
                     <p>Время потраченное на подбор: {reportData.timeSpent}</p>
                     <p>Количество рассмотренных кандидатов: {reportData.candidatesReviewed}</p>
                     <p>Результат подбора: {reportData.recruitmentResult}</p>

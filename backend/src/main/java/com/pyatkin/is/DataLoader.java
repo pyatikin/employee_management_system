@@ -49,11 +49,11 @@ public class DataLoader implements CommandLineRunner {
         departmentRepository.save(itDepartment);
         departmentRepository.save(officeDepartment);
 
-        Vacancy itVacancy = new Vacancy(1L, "Инженер-программист", "Разработка новых функций для флагманского продукта компании", 50000.0, LocalDate.parse("2024-04-30"), null, null, itDepartment, open);
-        Vacancy marketingVacancy = new Vacancy(2L, "Маркетолог", "Создание и управление маркетинговыми кампаниями", 45000.0, LocalDate.parse("2024-04-25"), null, null, officeDepartment, open);
-        Vacancy financeVacancy = new Vacancy(3L, "Финансовый аналитик", "Анализ финансовых данных и предоставление инсайтов", 55000.0, LocalDate.parse("2024-05-10"), null, null, itDepartment, open);
-        Vacancy okWork = new Vacancy(4L, "Работа", "нужно работать", 123.0, LocalDate.parse("2024-05-10"), null, null, itDepartment, work);
-        Vacancy notWork = new Vacancy(5L, "Не работа", "Не нужно работать", 0.0, LocalDate.parse("2024-05-10"), null, null, officeDepartment, work);
+        Vacancy itVacancy = new Vacancy(1L, "Инженер-программист", "Разработка новых функций для флагманского продукта компании", 50000.0, LocalDate.parse("2024-04-30"), null, null, itDepartment, open, null);
+        Vacancy marketingVacancy = new Vacancy(2L, "Маркетолог", "Создание и управление маркетинговыми кампаниями", 45000.0, LocalDate.parse("2024-04-25"), null, null, officeDepartment, open, null);
+        Vacancy financeVacancy = new Vacancy(3L, "Финансовый аналитик", "Анализ финансовых данных и предоставление инсайтов", 55000.0, LocalDate.parse("2024-05-10"), null, null, itDepartment, open, null);
+        Vacancy okWork = new Vacancy(4L, "Работа", "нужно работать", 123.0, LocalDate.parse("2024-05-10"), null, null, itDepartment, work, LocalDate.now());
+        Vacancy notWork = new Vacancy(5L, "Не работа", "Не нужно работать", 0.0, LocalDate.parse("2024-05-10"), null, null, officeDepartment, work, LocalDate.now());
 
         vacancyRepository.save(itVacancy);
         vacancyRepository.save(marketingVacancy);

@@ -1,11 +1,5 @@
 package com.pyatkin.is.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,8 +24,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-/*@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "vacancyId")*/
 public class Vacancy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,23 +42,21 @@ public class Vacancy {
     private LocalDate hiringDeadline;
 
     @OneToMany(mappedBy = "vacancy", fetch = FetchType.LAZY)
-    //@JsonBackReference("vacancies")
-    //@JsonIgnore
-    //@JsonManagedReference("vacancies")
     private List<Interview> interviews = new ArrayList<>();
 
     @Transient
-    private Long departmentId; // Временное поле для хранения идентификатора департамента
+    private Long departmentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DepartmentId", referencedColumnName = "departmentId", nullable = false)
-    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Department department;
 
-    @ManyToOne(fetch = FetchType.LAZY) // Ленивая загрузка, чтобы избежать избыточных запросов
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stageId", referencedColumnName = "stageId", nullable = false)
-    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private HiringStage stageId; // Связь с таблицей HiringStage по полю hiringStageId
+    private HiringStage stageId;
+
+    @Column(name = "StartDate", nullable = true) // Добавляем поле с датой начала поиска
+    private LocalDate startDate;
 
     // Геттеры и сеттеры
 }
