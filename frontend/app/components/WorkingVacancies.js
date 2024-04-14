@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ViewVacancyInWorkDialog from './ViewVacancyInWorkDialog';
 import ChangeVacancyStatusDialog from './ChangeVacancyStatusDialog';
-import ViewCandidatesInInterviewDialog from './ViewCandidatesInInterviewDialog';
+import ViewCandidatesInInterviewDialog from './ViewCandidatesInInterview';
 
 function WorkingVacancies({ setPageTitle }) {
     const [workingVacancies, setWorkingVacancies] = useState([]);

@@ -3,6 +3,7 @@ package com.pyatkin.is.controllers;
 
 import com.pyatkin.is.models.Candidate;
 import com.pyatkin.is.models.Interview;
+import com.pyatkin.is.models.InterviewData;
 import com.pyatkin.is.models.Vacancy;
 import com.pyatkin.is.repository.CandidateRepository;
 import com.pyatkin.is.repository.InterviewRepository;
@@ -91,6 +92,20 @@ public class InterviewController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+
+    @PutMapping("/{interviewId}")
+    public ResponseEntity<Interview> updateInterview(@PathVariable Long interviewId, @RequestBody InterviewData updatedInterview) {
+        Interview interview = interviewRepository.findById(interviewId)
+                .orElseThrow(() -> new RuntimeException("Interview not found with id " + interviewId));
+
+        interview.setInterviewEvaluation(updatedInterview.getInterviewEvaluation());
+        interview.setConversationEvaluation(updatedInterview.getConversationEvaluation());
+        interview.setRecommendationEvaluation(updatedInterview.getRecommendationEvaluation());
+        interview.setComment(updatedInterview.getComment());
+
+        final Interview updatedInterviewEntity = interviewRepository.save(interview);
+        return ResponseEntity.ok(updatedInterviewEntity);
     }
 
 

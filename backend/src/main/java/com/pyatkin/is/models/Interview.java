@@ -26,34 +26,31 @@ import org.hibernate.annotations.View;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-/*@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "interviewId")*/
 public class Interview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long interviewId;
 
     @Column(name = "InterviewEvaluation", nullable = true)
-    private Double interviewEvaluation;
+    private Integer interviewEvaluation;
 
     @Column(name = "ConversationEvaluation", nullable = true)
-    private Double conversationEvaluation;
+    private Integer conversationEvaluation;
 
     @Column(name = "RecommendationEvaluation", nullable = true)
-    private Double recommendationEvaluation;
+    private Integer recommendationEvaluation;
+
+    @Column(name = "Comment", length = 1000, nullable = true) // Добавляем поле комментария
+    private String comment; // Поле комментария
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "candidateId", referencedColumnName = "candidateId")
-    //@JsonManagedReference("candidates")
     @JsonIgnoreProperties("interviews")
-    //@JsonBackReference("candidates")
     private Candidate candidate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vacancyId", referencedColumnName = "vacancyId")
-    //@JsonManagedReference("vacancies")
     @JsonIgnoreProperties("interviews")
-    //@JsonBackReference("vacancies")
     private Vacancy vacancy;
 
     // Геттеры и сеттеры
