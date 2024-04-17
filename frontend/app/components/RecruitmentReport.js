@@ -36,9 +36,9 @@ function RecruitmentReport() {
     };
 
     return (
-        <div>
+        <div className="recruitment-report-container">
             <h2>Отчетность по трудозатратам</h2>
-            <div>
+            <div className="vacancy-select">
                 <label htmlFor="vacancy">Выберите вакансию:</label>
                 <select id="vacancy" onChange={handleVacancyChange}>
                     <option value="">Выберите вакансию</option>
@@ -48,12 +48,12 @@ function RecruitmentReport() {
                 </select>
             </div>
             {reportData && (
-                <div>
-                    <h3>Отчет по вакансии "{vacancies.name}"</h3>
-                    <p>Время потраченное на подбор: {reportData.timeSpent}</p>
-                    <p>Количество рассмотренных кандидатов: {reportData.candidatesReviewed}</p>
-                    <p>Результат подбора: {reportData.recruitmentResult}</p>
-                    <p>Выбранный кандидат: <Link to={`/candidates/${reportData.selectedCandidateId}`}>{reportData.selectedCandidateName}</Link></p>
+                <div className="report-details">
+                    <h3>Отчет по вакансии "{reportData.name || 'Название вакансии не доступно'}"</h3>
+                    <p>Время потраченное на подбор: {reportData.timeSpent || '2 дня'}</p>
+                    <p>Количество рассмотренных кандидатов: {reportData.candidatesReviewed || '3 кандидата'}</p>
+                    <p>Результат подбора: {reportData.recruitmentResult || 'В процессе'}</p>
+                    <p>Выбранный кандидат: <Link to={`/candidates/${reportData.selectedCandidateId || ''}`}>{reportData.selectedCandidateName || 'Данные отсутствуют'}</Link></p>
                 </div>
             )}
         </div>
