@@ -339,3 +339,56 @@ button:hover {
 .report-details a:hover {
     text-decoration: underline;
 }
+
+
+
+.recruitment-summary-page {
+    margin: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.date-picker {
+    margin-bottom: 20px;
+}
+
+.date-picker label {
+    margin-right: 10px;
+}
+
+.date-picker input[type="date"] {
+    margin-right: 10px;
+}
+
+.total-vacancies {
+    margin-bottom: 20px;
+}
+
+.vacancy-status-stats,
+.department-stats,
+.position-stats {
+    margin-bottom: 40px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 10px;
+}

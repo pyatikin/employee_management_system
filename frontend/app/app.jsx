@@ -8,7 +8,7 @@ import OpenVacancies from './components/OpenVacancies';
 import WorkingVacancies from './components/WorkingVacancies';
 import Applicants from './components/CandidatePage';
 import Reports from './components/Reports';
-import RecruitmentReport from './components/RecruitmentReport';
+import RecruitmentReport from './components/RecruitmentSummaryPage';
 import LoginPage from "./components/LoginPage";
 import VacancyStatusReport from "./components/VacancyStatusReport";
 
@@ -36,6 +36,7 @@ function App() {
                         <Route path="/reports" element={<Reports setPageTitle={setPageTitle} setPageLinks={setPageLinks} title="Отчеты" />} />
                         <Route path="/reports/recruitment" element={<RecruitmentReport />} />
                         <Route path="/reports/vacancy-status" element={<VacancyStatusReport />} />
+                        <Route path="/reports/svod" element={<RecruitmentReport />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="*" element={<Home setPageTitle={setPageTitle} />} />
                     </Routes>
