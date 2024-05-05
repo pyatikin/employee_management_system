@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-
-function ViewCandidatesInInterview({vacancy, onClose}) {
+function ViewCandidatesInInterview({ vacancy, onClose }) {
     const [candidates, setCandidates] = useState([]);
     const [selectedCandidate, setSelectedCandidate] = useState(null);
     const [interviewInfo, setInterviewInfo] = useState(null);
@@ -95,6 +94,10 @@ function ViewCandidatesInInterview({vacancy, onClose}) {
         }
     };
 
+    const handleApproveCandidate = () => {
+        // Добавить логику для утверждения кандидата на вакансию
+    };
+
     return (
         <div className="candidate-card-modal">
             <span className="close" onClick={onClose}>&times;</span>
@@ -109,6 +112,9 @@ function ViewCandidatesInInterview({vacancy, onClose}) {
                             </button>
                         </p>
                         <p>Email: {candidate.email}</p>
+                        <button className="approve-button" onClick={handleApproveCandidate}>
+                            Утвердить на вакансию
+                        </button>
                     </li>
                 ))}
             </ul>
