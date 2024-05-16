@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function VacancyStatusReport() {
+function VacancyStatusReport({ setPageTitle }) {
     const [vacancyStatusCounts, setVacancyStatusCounts] = useState([]);
 
     useEffect(() => {
+        setPageTitle("Отчет по статусам вакансий");
         fetchVacancyStatusCounts();
-    }, []);
+    }, [setPageTitle]);
 
     const fetchVacancyStatusCounts = async () => {
         try {

@@ -1,3 +1,4 @@
+/*
 import React, { useEffect } from 'react';
 import { Link, NavLink, useParams } from 'react-router-dom';
 import VacancyStatusReport from "./VacancyStatusReport";
@@ -52,3 +53,4 @@ function renderReport(reportType) {
 }
 
 export default Reports;
+*/

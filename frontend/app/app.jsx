@@ -35,9 +35,9 @@ function App() {
                         <Route path="/candidates" element={<Applicants setPageTitle={setPageTitle} title="Соискатели" />} />
                         <Route path="/documents" element={<Documents setPageTitle={setPageTitle} title="Документы" />} />
                         <Route path="/reports" element={<Reports setPageTitle={setPageTitle} setPageLinks={setPageLinks} title="Отчеты" />} />
-                        <Route path="/reports/recruitment" element={<RecruitmentReport />} />
-                        <Route path="/reports/vacancy-status" element={<VacancyStatusReport />} />
-                        <Route path="/reports/svod" element={<RecruitmentSummaryReport />} />
+                        <Route path="/reports/recruitment" element={<RecruitmentReport  setPageTitle={setPageTitle}/>} />
+                        <Route path="/reports/vacancy-status" element={<VacancyStatusReport setPageTitle={setPageTitle} />} />
+                        <Route path="/reports/svod" element={<RecruitmentSummaryReport setPageTitle={setPageTitle}/>} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="*" element={<Home setPageTitle={setPageTitle} />} />
                     </Routes>

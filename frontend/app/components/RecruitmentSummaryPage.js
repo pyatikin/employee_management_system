@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function RecruitmentSummaryReport() {
+function RecruitmentSummaryReport({ setPageTitle }) {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [totalVacancies, setTotalVacancies] = useState(6);
@@ -25,8 +25,9 @@ function RecruitmentSummaryReport() {
     };
 
     useEffect(() => {
+        setPageTitle("Сводный отчет");
         fetchSummaryReport();
-    }, [startDate, endDate]);
+    }, [startDate, endDate, setPageTitle]);
 
     const handleDateChange = () => {
         fetchSummaryReport();

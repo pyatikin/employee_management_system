@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-function RecruitmentReport() {
+function RecruitmentReport({ setPageTitle }) {
     const [vacancies, setVacancies] = useState([]);
     const [selectedVacancy, setSelectedVacancy] = useState(null);
     const [reportData, setReportData] = useState(null);
 
     useEffect(() => {
+        setPageTitle("Отчет по трудозатратам на подбор");
         fetchVacancies();
-    }, []);
+    }, [setPageTitle]);
 
     const fetchVacancies = async () => {
         try {

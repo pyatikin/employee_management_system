@@ -20,7 +20,7 @@ header {
     top: 0;
     left: -200px;
     height: 100%;
-    transition: left 0.3s ease;
+    transition: left 1.5s ease;
     z-index: 1001; /* Перекрываем заголовок */
     padding-top: 60px; /* Отступ сверху для учёта верхней строки */
 }
@@ -28,6 +28,62 @@ header {
 .sidebar.open {
     left: 0;
 }
+.sidebar nav {
+    padding: 20px;
+}
+
+.sidebar nav div {
+    margin-bottom: 20px;
+}
+
+.sidebar nav div .submenu {
+    margin-bottom: 10px;
+}
+
+.sidebar nav div .submenu span {
+    cursor: pointer;
+    display: block;
+    padding: 10px 0;
+    font-weight: bold;
+}
+
+.sidebar nav div .submenu ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.sidebar nav div .submenu ul li {
+    margin-bottom: 5px;
+    position: relative;
+}
+
+.sidebar nav div .submenu ul li:before {
+    content: "•";
+    color: #486ca3;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+    position: absolute;
+    left: 0;
+}
+
+.sidebar nav div .submenu ul li a {
+    display: block;
+    padding: 5px 0;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    border-radius: 5px; /* Скругление */
+    transition: background-color 0.3s ease; /* Плавное изменение цвета фона */
+}
+
+.sidebar nav div .submenu ul li a.active {
+    font-weight: bold;
+    background-color: #486ca3; /* Цвет выбранной области */
+    border: 1px solid #ccc; /* Граница */
+}
+
+
+
 
 nav {
     padding-left: 20px;
@@ -35,14 +91,18 @@ nav {
 
 nav a {
     display: block;
-    margin-bottom: 10px;
+    padding: 5px 0;
+    color: black;
     text-decoration: none;
-    color: #000;
+    font-family: Arial, sans-serif;
+    border-radius: 5px; /* Скругление */
+    transition: background-color 1s ease; /* Плавное изменение цвета фона */
 }
 
 nav a.active {
     background-color: #486ca3;
     color: #fff;
+    border: 1px solid #ccc;
 }
 
 /* Стили для контента */
