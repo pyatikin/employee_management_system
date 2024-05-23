@@ -1,7 +1,9 @@
 package com.pyatkin.is.controller;
 
 import com.pyatkin.is.models.Department;
+import com.pyatkin.is.models.HiringStage;
 import com.pyatkin.is.models.Vacancy;
+import com.pyatkin.is.repository.CandidateRepository;
 import com.pyatkin.is.repository.DepartmentRepository;
 import com.pyatkin.is.repository.HiringStageRepository;
 import com.pyatkin.is.repository.VacancyRepository;
@@ -13,10 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,11 +30,13 @@ public class VacancyController {
     private final VacancyRepository vacancyRepository;
     private final DepartmentController departmentController;
     private final HiringStageRepository hiringStageRepository;
+    private final CandidateRepository candidateRepository;
 
-    public VacancyController(VacancyRepository vacancyRepository, DepartmentRepository departmentRepository, DepartmentController departmentController, HiringStageRepository hiringStageRepository) {
+    public VacancyController(VacancyRepository vacancyRepository, DepartmentRepository departmentRepository, DepartmentController departmentController, HiringStageRepository hiringStageRepository, CandidateRepository candidateRepository) {
         this.vacancyRepository = vacancyRepository;
         this.departmentController = departmentController;
         this.hiringStageRepository = hiringStageRepository;
+        this.candidateRepository = candidateRepository;
     }
 
     // Получение всех вакансий
@@ -120,5 +122,22 @@ public class VacancyController {
         }
     }
 
+    @GetMapping("/closed")
+    public List<Vacancy> getClosedVacancies() {
+        HiringStage stage = hiringStageRepository.findByName("закрыта");
+        return vacancyRepository.findAllByStageId(stage);
+    }
+
+    @PostMapping("/{vacancyId}/approve")
+    public void approveCandidate(@PathVariable Long vacancyId, @RequestBody Long candidateId) {
+        Vacancy vacancy = vacancyRepository.findById(vacancyId).orElseThrow();
+        HiringStage closedStage = hiringStageRepository.findByName("закрыта");
+
+        var candidate = candidateRepository.findById(candidateId);
+        // Изменяем статус вакансии на "закрыта" и сохраняем кандидата в вакансии
+        vacancy.setStageId(closedStage);
+        vacancy.setCandidate(candidate.get());
+        vacancyRepository.save(vacancy);
+    }
 
 }

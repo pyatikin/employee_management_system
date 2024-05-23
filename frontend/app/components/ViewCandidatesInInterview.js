@@ -34,7 +34,7 @@ function ViewCandidatesInInterview({ vacancy, onClose }) {
     const fetchSkillsOptions = async () => {
         try {
             const response = await axios.get('http://localhost:8080/skills');
-            const skillsData = response.data.map(skill => ({value: skill.skillsId, label: skill.name}));
+            const skillsData = response.data.map(skill => ({ value: skill.skillsId, label: skill.name }));
             setSkillsOptions(skillsData);
         } catch (error) {
             console.error('Error fetching skills:', error);
@@ -94,9 +94,19 @@ function ViewCandidatesInInterview({ vacancy, onClose }) {
         }
     };
 
-    const handleApproveCandidate = () => {
-        // Добавить логику для утверждения кандидата на вакансию
+    const handleApproveCandidate = async (candidate) => {
+        try {
+            await axios.post(`http://localhost:8080/vacancies/${vacancy.vacancyId}/approve`, candidate.candidateId, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            onClose();
+        } catch (error) {
+            console.error('Error approving candidate:', error);
+        }
     };
+
 
     return (
         <div className="candidate-card-modal">
@@ -112,7 +122,7 @@ function ViewCandidatesInInterview({ vacancy, onClose }) {
                             </button>
                         </p>
                         <p>Email: {candidate.email}</p>
-                        <button className="approve-button" onClick={handleApproveCandidate}>
+                        <button className="approve-button" onClick={() => handleApproveCandidate(candidate)}>
                             Утвердить на вакансию
                         </button>
                     </li>
@@ -199,6 +209,7 @@ function ViewCandidatesInInterview({ vacancy, onClose }) {
 
 ViewCandidatesInInterview.propTypes = {
     vacancy: PropTypes.object.isRequired,
+    onClose: PropTypes.func.isRequired,
 };
 
 export default ViewCandidatesInInterview;

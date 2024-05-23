@@ -1,5 +1,7 @@
 package com.pyatkin.is.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,5 +36,6 @@ public class Skills {
 
     // Поле для связи многие ко многим с кандидатами
     @ManyToMany(mappedBy = "skills")
+    @JsonIgnore
     private Set<Candidate> candidates = new HashSet<>();
 }

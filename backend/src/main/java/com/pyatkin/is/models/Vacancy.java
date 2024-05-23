@@ -1,19 +1,11 @@
 package com.pyatkin.is.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -45,6 +37,8 @@ public class Vacancy {
     private String experience;
 
     @OneToMany(mappedBy = "vacancy", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JsonBackReference
     private List<Interview> interviews = new ArrayList<>();
 
     @Transient
@@ -61,5 +55,8 @@ public class Vacancy {
     @Column(name = "StartDate", nullable = true) // Добавляем поле с датой начала поиска
     private LocalDate startDate;
 
-    // Геттеры и сеттеры
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "candidateId", referencedColumnName = "candidateId")
+    @JsonBackReference
+    private Candidate candidate;
 }

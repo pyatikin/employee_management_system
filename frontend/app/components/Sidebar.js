@@ -29,10 +29,12 @@ function Sidebar() {
                             <ul>
                                 <li><NavLink to="/open-vacancies" activeClassName="active" onClick={closeMenu}>Открытые</NavLink></li>
                                 <li><NavLink to="/working-vacancies" activeClassName="active" onClick={closeMenu}>В работе</NavLink></li>
+                                <li><NavLink to="/closed-vacancies" activeClassName="active" onClick={closeMenu}>Закрытые вакансии</NavLink></li>
                             </ul>
                         )}
                     </div>
                     <NavLink to="/candidates" activeClassName="active" onClick={closeMenu}>Соискатели</NavLink>
+                    <NavLink to="/skills" activeClassName="active" onClick={closeMenu}>Навыки</NavLink>
                     <div className="submenu">
                         <span onClick={toggleReportSubMenu}>Отчеты</span>
                         {reportSubMenuOpen && (
