@@ -3,8 +3,7 @@ import axios from 'axios';
 import Select from 'react-select';
 import Modal from 'react-modal';
 import CandidateCard from './CandidateCard';
-import AddCandidateForm from './AddCandidateForm'; // Импортируем компонент AddCandidateForm
-
+import AddCandidateForm from './AddCandidateForm';
 
 function CandidatePage({ setPageTitle }) {
     const [candidates, setCandidates] = useState([]);
@@ -12,17 +11,13 @@ function CandidatePage({ setPageTitle }) {
     const [skillsOptions, setSkillsOptions] = useState([]);
     const [selectedSkills, setSelectedSkills] = useState([]);
     const [selectedCandidate, setSelectedCandidate] = useState(null);
-    const [isAddCandidateModalOpen, setAddCandidateModalOpen] = useState(false); // Состояние модального окна для добавления кандидата
+    const [isAddCandidateModalOpen, setAddCandidateModalOpen] = useState(false);
 
     useEffect(() => {
         setPageTitle("Соискатели");
         fetchSkillsOptions();
         fetchCandidates();
     }, [setPageTitle]);
-
-    useEffect(() => {
-        fetchCandidates();
-    }, [selectedSkills]);
 
     const fetchCandidates = async () => {
         try {
@@ -74,13 +69,22 @@ function CandidatePage({ setPageTitle }) {
 
     const filteredCandidates = candidates.filter(candidate => {
         const fullName = `${candidate.firstName} ${candidate.lastName}`.toLowerCase();
-        return fullName.includes(searchTerm.toLowerCase());
+        const matchesName = fullName.includes(searchTerm.toLowerCase());
+
+        // Фильтрация по навыкам
+        const selectedSkillIds = selectedSkills.map(skill => skill.value);
+        const candidateSkillIds = candidate.skills.map(skill => skill.skillsId);
+
+        // Логическое "И" для навыков
+        const matchesSkills = selectedSkillIds.every(skillId => candidateSkillIds.includes(skillId));
+
+        return matchesName && matchesSkills;
     });
 
     return (
         <div>
             <h2>Соискатели</h2>
-            <button onClick={toggleAddCandidateModal}>Добавить кандидата</button> {/* Кнопка для открытия модального окна */}
+            <button onClick={toggleAddCandidateModal}>Добавить кандидата</button>
             <input
                 type="text"
                 placeholder="Поиск по имени"
@@ -124,7 +128,6 @@ function CandidatePage({ setPageTitle }) {
                 onRequestClose={toggleAddCandidateModal}
                 contentLabel="Добавление кандидата"
             >
-                {/* Передаем fetchCandidates в AddCandidateForm */}
                 <AddCandidateForm onClose={toggleAddCandidateModal} fetchCandidates={fetchCandidates} />
             </Modal>
         </div>

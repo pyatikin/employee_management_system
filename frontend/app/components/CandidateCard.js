@@ -48,6 +48,14 @@ function CandidateCard({ candidate, onClose }) {
             <span className="close" onClick={onClose}>&times;</span>
             <h2>{candidate.firstName} {candidate.lastName}</h2>
             <p>Email: {candidate.email}</p>
+            <p>Пол: {candidate.gender}</p>
+            <p>Гражданство: {candidate.nationality}</p>
+            <p>Образование: {candidate.education}</p>
+            <p>Телефон: {candidate.phone}</p>
+            {candidateResumes.map(resume => (
+                <p key={resume.resumeId}>Должность: {resume.position}</p>
+            ))}
+            <p>Статус поиска: {candidate.searchStatus}</p>
             <h3>Навыки:</h3>
             <ul>
                 {candidateSkills.map(skill => (

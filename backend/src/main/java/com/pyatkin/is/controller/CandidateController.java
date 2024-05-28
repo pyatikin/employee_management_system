@@ -26,8 +26,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
@@ -62,6 +64,11 @@ public class CandidateController {
             } else {
                 // В противном случае выполняем поиск
                 candidates = candidateRepository.findAll();
+                candidates.forEach(
+                        candidate -> {
+                            candidate.setSkills(new HashSet<>(skillsRepository.findAllByCandidates(candidate)));
+                        }
+                );
                 // Загружаем навыки и резюме для каждого кандидата
                 candidates.forEach(candidate -> {
                     candidate.getSkills().size(); // Загружаем навыки
@@ -89,27 +96,26 @@ public class CandidateController {
             @RequestBody CandidateRequest candidateRequest) {
 
         try {
-            // Создание сущности кандидата
             Candidate candidate = new Candidate();
             candidate.setFirstName(candidateRequest.getFirstName());
             candidate.setLastName(candidateRequest.getLastName());
             candidate.setEmail(candidateRequest.getEmail());
+            candidate.setGender(candidateRequest.getGender());
+            candidate.setNationality(candidateRequest.getNationality());
+            candidate.setEducation(candidateRequest.getEducation());
+            candidate.setPhone(candidateRequest.getPhone());
+            candidate.setSearchStatus(candidateRequest.getSearchStatus());
 
-            // Создание резюме
             Resume candidateResume = new Resume();
             candidateResume.setPosition(candidateRequest.getResume().getPosition());
             candidateResume.setContent(candidateRequest.getResume().getContent());
             resumeRepository.save(candidateResume);
 
-
             for (Long skillId: candidateRequest.getSkills()) {
                 candidate.getSkills().add(skillsRepository.findById(skillId).get());
             }
 
-            // Связывание кандидата с резюме и навыком
             candidate.getResumes().add(candidateResume);
-
-            // Сохранение кандидата
             Candidate savedCandidate = candidateRepository.save(candidate);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(savedCandidate);

@@ -1,11 +1,16 @@
 package com.pyatkin.is.controller;
 
+import com.pyatkin.is.models.Candidate;
+import com.pyatkin.is.models.CandidateRequest;
 import com.pyatkin.is.models.Department;
 import com.pyatkin.is.models.HiringStage;
+import com.pyatkin.is.models.Interview;
 import com.pyatkin.is.models.Vacancy;
+import com.pyatkin.is.models.VacancyRequest;
 import com.pyatkin.is.repository.CandidateRepository;
 import com.pyatkin.is.repository.DepartmentRepository;
 import com.pyatkin.is.repository.HiringStageRepository;
+import com.pyatkin.is.repository.InterviewRepository;
 import com.pyatkin.is.repository.VacancyRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
@@ -31,12 +37,14 @@ public class VacancyController {
     private final DepartmentController departmentController;
     private final HiringStageRepository hiringStageRepository;
     private final CandidateRepository candidateRepository;
+    private final InterviewRepository interviewRepository;
 
-    public VacancyController(VacancyRepository vacancyRepository, DepartmentRepository departmentRepository, DepartmentController departmentController, HiringStageRepository hiringStageRepository, CandidateRepository candidateRepository) {
+    public VacancyController(VacancyRepository vacancyRepository, DepartmentRepository departmentRepository, DepartmentController departmentController, HiringStageRepository hiringStageRepository, CandidateRepository candidateRepository, InterviewRepository interviewRepository) {
         this.vacancyRepository = vacancyRepository;
         this.departmentController = departmentController;
         this.hiringStageRepository = hiringStageRepository;
         this.candidateRepository = candidateRepository;
+        this.interviewRepository = interviewRepository;
     }
 
     // Получение всех вакансий
@@ -71,10 +79,18 @@ public class VacancyController {
 
     // Создание новой вакансии
     @PostMapping
-    public ResponseEntity<Vacancy> createVacancy(@RequestBody Vacancy vacancy) {
-        Department department = departmentController.findById(vacancy.getDepartmentId());
+    public ResponseEntity<Vacancy> createVacancy(@RequestBody VacancyRequest vacancyRequest) {
+        Vacancy vacancy = new Vacancy();
+        Department department = departmentController.findById(vacancyRequest.getDepartmentId());
         vacancy.setDepartment(department);
         vacancy.setStageId(hiringStageRepository.findByName("открыта"));
+        vacancy.setName(vacancyRequest.getName());
+        vacancy.setDescription(vacancyRequest.getDescription());
+        vacancy.setExperience(vacancyRequest.getExperience());
+        vacancy.setSalary(vacancyRequest.getSalary());
+        vacancy.setHiringDeadline(vacancyRequest.getHiringDeadline());
+        vacancy.setInterviews(null);
+        vacancy.setCandidate(null);
         Vacancy createdVacancy = vacancyRepository.save(vacancy);
         return new ResponseEntity<>(createdVacancy, HttpStatus.CREATED);
     }
@@ -138,6 +154,12 @@ public class VacancyController {
         vacancy.setStageId(closedStage);
         vacancy.setCandidate(candidate.get());
         vacancyRepository.save(vacancy);
+    }
+
+    @GetMapping("/{vacancyId}/selected-candidate")
+    public Candidate getCandidate(@PathVariable Long vacancyId) {
+        Vacancy vacancy = vacancyRepository.findById(vacancyId).orElseThrow();
+        return vacancy.getCandidate();
     }
 
 }

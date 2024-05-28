@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import ViewVacancyInWorkDialog from './ViewVacancyInWorkDialog';
 import ChangeVacancyStatusDialog from './ChangeVacancyStatusDialog';
 import ViewCandidatesInInterviewDialog from './ViewCandidatesInInterview';
+import ViewVacancyClosedDialog from "./ViewVacancyClosedDialog";
+import ViewSelectedCandidateDialog from "./ViewSelectedCandidateDialog"; // Импортируем диалог для просмотра выбранного кандидата
+//import ViewEmploymentContractDialog from "./ViewEmploymentContractDialog"; // Импортируем диалог для просмотра трудового договора
 
 function ClosedVacancies({ setPageTitle }) {
     const [closedVacancies, setClosedVacancies] = useState([]);
@@ -11,6 +13,8 @@ function ClosedVacancies({ setPageTitle }) {
     const [isChangeStatusDialogOpen, setChangeStatusDialogOpen] = useState(false);
     const [selectedVacancyId, setSelectedVacancyId] = useState(null);
     const [isViewCandidatesDialogOpen, setViewCandidatesDialogOpen] = useState(false);
+    const [isViewSelectedCandidateDialogOpen, setViewSelectedCandidateDialogOpen] = useState(false);
+    const [isViewEmploymentContractDialogOpen, setViewEmploymentContractDialogOpen] = useState(false);
 
     useEffect(() => {
         setPageTitle("Закрытые вакансии");
@@ -35,6 +39,8 @@ function ClosedVacancies({ setPageTitle }) {
         setViewVacancyDialogOpen(false);
         setChangeStatusDialogOpen(false);
         setViewCandidatesDialogOpen(false);
+        setViewSelectedCandidateDialogOpen(false);
+        setViewEmploymentContractDialogOpen(false);
         fetchVacancies();
     };
 
@@ -48,6 +54,16 @@ function ClosedVacancies({ setPageTitle }) {
         setViewCandidatesDialogOpen(true);
     };
 
+    const openSelectedCandidateDialog = vacancy => {
+        setSelectedVacancy(vacancy);
+        setViewSelectedCandidateDialogOpen(true);
+    };
+
+    const openEmploymentContractDialog = vacancy => {
+        setSelectedVacancy(vacancy);
+        setViewEmploymentContractDialogOpen(true);
+    };
+
     const renderVacancyRow = vacancy => {
         return (
             <tr key={vacancy.vacancyId}>
@@ -57,7 +73,8 @@ function ClosedVacancies({ setPageTitle }) {
                 <td>
                     <button onClick={() => openViewVacancyDialog(vacancy)}>Просмотр</button>
                     <button onClick={() => openChangeStatusDialog(vacancy.vacancyId)}>Изменить статус</button>
-                    <button onClick={() => openCandidatesDialog(vacancy)}>Просмотр кандидатов</button>
+                    <button onClick={() => openSelectedCandidateDialog(vacancy)}>Просмотр выбранного кандидата</button>
+                    <button onClick={() => openEmploymentContractDialog(vacancy)}>Просмотреть трудовой договор</button>
                 </td>
             </tr>
         );
@@ -80,11 +97,13 @@ function ClosedVacancies({ setPageTitle }) {
                 </tbody>
             </table>
 
-            {isViewVacancyDialogOpen && <ViewVacancyInWorkDialog vacancy={selectedVacancy} onClose={handleCloseDialog} />}
+            {isViewVacancyDialogOpen && <ViewVacancyClosedDialog vacancy={selectedVacancy} onClose={handleCloseDialog} />}
             {isChangeStatusDialogOpen && (
                 <ChangeVacancyStatusDialog vacancyId={selectedVacancyId} onClose={handleCloseDialog} fetchVacancies={fetchVacancies} />
             )}
             {isViewCandidatesDialogOpen && <ViewCandidatesInInterviewDialog vacancy={selectedVacancy} onClose={handleCloseDialog} />}
+            {isViewSelectedCandidateDialogOpen && <ViewSelectedCandidateDialog vacancy={selectedVacancy} onClose={handleCloseDialog} />}
+            {/*{isViewEmploymentContractDialogOpen && <ViewEmploymentContractDialog vacancy={selectedVacancy} onClose={handleCloseDialog} />}*/}
         </div>
     );
 }

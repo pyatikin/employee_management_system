@@ -9,7 +9,6 @@ function CreateVacancyDialog({onCreate, onClose, updateVacancies}) {
     const [departmentId, setDepartmentId] = useState('');
     const [departments, setDepartments] = useState([]);
     const [experience, setExperience] = useState(''); // Добавляем состояние для опыта
-    const [startDate, setStartDate] = useState(''); // Добавляем состояние для даты начала
 
     useEffect(() => {
         const fetchDepartments = async () => {
@@ -33,8 +32,7 @@ function CreateVacancyDialog({onCreate, onClose, updateVacancies}) {
                 salary,
                 hiringDeadline,
                 departmentId,
-                experience, // Отправляем новое поле опыта
-                startDate // Отправляем новое поле даты начала
+                experience
             });
             onCreate(response.data);
             onClose();
@@ -62,9 +60,6 @@ function CreateVacancyDialog({onCreate, onClose, updateVacancies}) {
                     <label htmlFor="salary">Зарплата:</label>
                     <input type="number" id="salary" value={salary} onChange={(e) => setSalary(e.target.value)} required />
 
-                    <label htmlFor="startDate">Дата начала:</label>
-                    <input type="date" id="startDate" value={startDate} onChange={(e) => setStartDate(e.target.value)}
-                           required/>
                     <label htmlFor="hiringDeadline">Крайний срок:</label>
                     <input type="date" id="hiringDeadline" value={hiringDeadline} onChange={(e) => setHiringDeadline(e.target.value)} required />
 

@@ -14,6 +14,7 @@ import RecruitmentSummaryReport from "./components/RecruitmentSummaryPage";
 import RecruitmentReport from "./components/RecruitmentReport";
 import ClosedVacancies from "./components/ClosedVacancies";
 import SkillsPage from "./components/SkillsPage";
+import EmployeeProfilePage from "./components/EmployeeProfilePage";
 
 function App() {
     const [pageTitle, setPageTitle] = React.useState("Главная");
@@ -30,6 +31,7 @@ function App() {
                 <Sidebar />
                 <div className="content">
                     <Routes>
+                        <Route path="/employee-profile" element={<EmployeeProfilePage setPageTitle={setPageTitle}/>} />
                         <Route path="/" element={<Home setPageTitle={setPageTitle} />} />
                         <Route path="/about" element={<About setPageTitle={setPageTitle} title="О сайте" />} />
                         <Route path="/open-vacancies" element={<OpenVacancies setPageTitle={setPageTitle} title="Открытые вакансии" />} />

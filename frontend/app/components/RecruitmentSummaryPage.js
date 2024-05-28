@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function RecruitmentSummaryReport({ setPageTitle }) {
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [startDate, setStartDate] = useState('2024-05-26');
+    const [endDate, setEndDate] = useState('2024-06-26');
     const [totalVacancies, setTotalVacancies] = useState(6);
     const [totalCandidates, setTotalCandidates] = useState(3);
-    const [vacancyStatusStats, setVacancyStatusStats] = useState([{ status: 'в работе', count: 3 }, { status: 'открыта', count: 3 }]);
+    const [vacancyStatusStats, setVacancyStatusStats] = useState([{ status: 'в работе', count: 3 }, { status: 'открыта', count: 3 }, { status: 'закрыта', count: 3 }]);
     const [departmentStats, setDepartmentStats] = useState([{ departmentName: 'ИТ', count: 3 }, { departmentName: 'Офис', count: 2 }, { departmentName: 'Отдел продаж', count: 1 }]);
     const [positionStats, setPositionStats] = useState([{ positionName: 'Разработчик', count: 2 }, { positionName: 'Дизайнер', count: 1 }, { positionName: 'Менеджер по продажам', count: 1 }, { positionName: 'Аналитик', count: 1 }, { positionName: 'HR-специалист', count: 1 }]);
 

@@ -1,5 +1,6 @@
 package com.pyatkin.is.controller;
 
+import com.pyatkin.is.models.Candidate;
 import com.pyatkin.is.models.HiringStage;
 import com.pyatkin.is.models.Interview;
 import com.pyatkin.is.models.Vacancy;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
@@ -62,29 +64,29 @@ public class ReportsController {
 
             // Вычисляем время потраченное на поиск в днях
             LocalDate startDate = vacancy.getStartDate();
-            LocalDate endDate = LocalDate.now();
-            long daysSpent = Period.between(startDate, endDate).getDays();
+            LocalDate endDate = vacancy.getEndDate();
+            long daysSpent = (startDate!=null&&endDate!=null)?Period.between(startDate, endDate).getDays():0;
 
             // Получаем количество кандидатов для данной вакансии
             List<Interview> interviews = vacancy.getInterviews();
             long candidateCount = interviews.size();
 
             // Вычисляем количество кандидатов на рассмотрении, прошедших телефонное интервью и собеседование
-            long candidatesInReview = interviews.stream().filter(interview -> interview.getInterviewEvaluation() != null).count();
-            long candidatesForPhoneInterview = interviews.stream().filter(interview -> interview.getInterviewEvaluation() != null && interview.getConversationEvaluation() != null).count();
-            long candidatesForInterview = interviews.stream().filter(interview -> interview.getConversationEvaluation() != null && interview.getRecommendationEvaluation() != null).count();
+            long candidatesWithInterview = interviews.stream().filter(interview -> interview.getInterviewEvaluation() != null).count();
+            long candidatesWithConversation = interviews.stream().filter(interview -> interview.getConversationEvaluation() != null).count();
 
             // Получаем результат работы
-            String recruitmentResult = "In Progress"; // Пока в процессе
+            String recruitmentResult = vacancy.getStageId().getName(); // Пока в процессе
 
             // Создаем объект отчета и устанавливаем значения
             RecruitmentSummaryReport report = new RecruitmentSummaryReport();
+            report.setName(vacancy.getName());
             report.setDaysSpent(daysSpent);
             report.setCandidateCount(candidateCount);
             report.setRecruitmentResult(recruitmentResult);
-            report.setCandidatesInReview(candidatesInReview);
-            report.setCandidatesForPhoneInterview(candidatesForPhoneInterview);
-            report.setCandidatesForInterview(candidatesForInterview);
+            report.setCandidatesWithInterview(candidatesWithInterview!=0?(double)candidatesWithInterview/candidateCount*100:0);
+            report.setCandidatesWithConversation(candidatesWithConversation!=0?(double)candidatesWithConversation/candidateCount*100:0);
+            report.setCandidate(vacancy.getCandidate());
 
             return ResponseEntity.ok(report);
         } catch (EntityNotFoundException e) {
@@ -97,14 +99,72 @@ public class ReportsController {
 
     @Data
     public class RecruitmentSummaryReport {
+        private String name;
         private Long daysSpent; // Время потраченное на поиск в днях
         private Long candidateCount; // Количество кандидатов
         private String recruitmentResult; // Результат работы
-        private Long candidatesInReview; // Количество кандидатов на рассмотрении
-        private Long candidatesForPhoneInterview; // Количество кандидатов для телефонного интервью
-        private Long candidatesForInterview; // Количество кандидатов на собеседовании
+        private Double candidatesWithConversation; // Количество кандидатов для телефонного интервью
+        private Double candidatesWithInterview; // Количество кандидатов на собеседовании
+        private Candidate candidate;
 
         // Геттеры и сеттеры
     }
+
+   /* @GetMapping("/summary")
+    public ResponseEntity<SummaryReport> getSummaryReport(
+            @RequestParam(name = "startDate", required = false) String startDate,
+            @RequestParam(name = "endDate", required = false) String endDate
+    ) {
+        try {
+            LocalDate start = LocalDate.parse(startDate);
+            LocalDate end = LocalDate.parse(endDate);
+
+            long totalVacancies = vacancyRepository.countByStartDateBetween(start, end);
+            List<Vacancy> vacancyList = vacancyRepository.findAllByStartDateBetween(start, end);
+            long totalCandidates = vacancyRepository.countTotalCandidatesByStartDateBetween(start, end);
+            List<HiringStage> hiringStages = hiringStageRepository.findAll();
+
+            SummaryReport report = new SummaryReport();
+            report.setTotalVacancies(totalVacancies);
+            report.setTotalCandidates(totalCandidates);
+            report.setHiringStages(hiringStages);
+
+            return ResponseEntity.ok(report);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    public static class SummaryReport {
+        private long totalVacancies;
+        private long totalCandidates;
+        private List<HiringStage> hiringStages;
+
+        // Getters and setters
+
+        public long getTotalVacancies() {
+            return totalVacancies;
+        }
+
+        public void setTotalVacancies(long totalVacancies) {
+            this.totalVacancies = totalVacancies;
+        }
+
+        public long getTotalCandidates() {
+            return totalCandidates;
+        }
+
+        public void setTotalCandidates(long totalCandidates) {
+            this.totalCandidates = totalCandidates;
+        }
+
+        public List<HiringStage> getHiringStages() {
+            return hiringStages;
+        }
+
+        public void setHiringStages(List<HiringStage> hiringStages) {
+            this.hiringStages = hiringStages;
+        }
+    }*/
 
 }

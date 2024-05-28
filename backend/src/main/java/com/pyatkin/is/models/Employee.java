@@ -20,5 +20,6 @@ public class Employee {
     @Column(name = "LastName", nullable = false)
     private String lastName;
 
+
     // Геттеры и сеттеры
 }

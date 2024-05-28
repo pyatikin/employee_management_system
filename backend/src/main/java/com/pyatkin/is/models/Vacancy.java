@@ -1,6 +1,11 @@
 package com.pyatkin.is.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +21,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIdentityInfo(property = "jsonVacancyId", generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Vacancy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,8 +43,6 @@ public class Vacancy {
     private String experience;
 
     @OneToMany(mappedBy = "vacancy", fetch = FetchType.LAZY)
-    @ToString.Exclude
-    @JsonBackReference
     private List<Interview> interviews = new ArrayList<>();
 
     @Transient
@@ -52,11 +56,12 @@ public class Vacancy {
     @JoinColumn(name = "stageId", referencedColumnName = "stageId", nullable = false)
     private HiringStage stageId;
 
-    @Column(name = "StartDate", nullable = true) // Добавляем поле с датой начала поиска
+    @Column(name = "StartDate", nullable = true)
     private LocalDate startDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "candidateId", referencedColumnName = "candidateId")
-    @JsonBackReference
+    @Column(name = "EndDate", nullable = true)
+    private LocalDate endDate;
+
+    @OneToOne(targetEntity = Candidate.class)
     private Candidate candidate;
 }

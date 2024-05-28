@@ -19,17 +19,13 @@ function VacancyStatusReport({ setPageTitle }) {
     };
 
     const calculateLineWidth = (value) => {
-        // Пример расчета длины линии в зависимости от значения от 0 до 1
         return value * 100 + '%'; // Преобразуем значение в проценты для определения ширины линии
     };
 
-    const calculateLineColor = (value) => {
-        // Пример расчета цвета линии в зависимости от значения от 0 до 1
-        if (value < 0.5) {
-            return 'red';
-        } else {
-            return 'green';
-        }
+    const calculateLineColor = (index) => {
+        // Используем индекс элемента для определения цвета
+        const hue = (index / vacancyStatusCounts.length) * 120; // hue изменяется от 0 до 120
+        return `hsl(${hue}, 100%, 50%)`;
     };
 
     return (
@@ -44,12 +40,18 @@ function VacancyStatusReport({ setPageTitle }) {
                 </tr>
                 </thead>
                 <tbody>
-                {vacancyStatusCounts.map(status => (
+                {vacancyStatusCounts.map((status, index) => (
                     <tr key={status.stage}>
                         <td>{status.stage}</td>
                         <td>{status.count}</td>
                         <td>
-                            <div style={{ width: calculateLineWidth(status.relativeCount), height: '10px', backgroundColor: calculateLineColor(status.relativeCount) }}></div>
+                            <div
+                                style={{
+                                    width: calculateLineWidth(status.relativeCount),
+                                    height: '10px',
+                                    backgroundColor: calculateLineColor(index) // Передаем индекс элемента
+                                }}
+                            ></div>
                         </td>
                     </tr>
                 ))}

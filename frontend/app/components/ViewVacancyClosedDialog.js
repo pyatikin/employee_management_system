@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ViewVacancyDialog({ vacancy, onClose }) {
+function ViewVacancyInWorkDialog({ vacancy, onClose }) {
     return (
         <div className="modal-overlay">
             <div className="modal-content">
@@ -11,9 +11,12 @@ function ViewVacancyDialog({ vacancy, onClose }) {
                 <p>Зарплата: {vacancy.salary}</p>
                 <p>Требуемый опыт: {vacancy.experience}</p>
                 <p>Описание: {vacancy.description}</p>
+                <p>Дата начала поиска: {vacancy.startDate}</p>
+                <p>Дата завершения поиска: {vacancy.endDate}</p>
+                {/* Добавьте другие поля вакансии здесь */}
             </div>
         </div>
     );
 }
 
-export default ViewVacancyDialog;
+export default ViewVacancyInWorkDialog;

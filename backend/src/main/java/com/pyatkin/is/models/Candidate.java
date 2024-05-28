@@ -1,7 +1,11 @@
 package com.pyatkin.is.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +22,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIdentityInfo(property = "jsonCandidateId", generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,29 +37,35 @@ public class Candidate {
     @Column(name = "Email", unique = true, nullable = false)
     private String email;
 
+    @Column(name = "Gender")
+    private String gender;
+
+    @Column(name = "Nationality")
+    private String nationality;
+
+    @Column(name = "Education")
+    private String education;
+
+    @Column(name = "Phone")
+    private String phone;
+
+    @Column(name = "SearchStatus")
+    private String searchStatus;
+
     @OneToMany(mappedBy = "candidate", fetch = FetchType.LAZY)
-    //@ToString.Exclude
-    @JsonManagedReference
+    @JsonIgnoreProperties("candidate")
     private List<Interview> interviews = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "Candidate_Resume",
             joinColumns = @JoinColumn(name = "candidateId"),
             inverseJoinColumns = @JoinColumn(name = "resumeId"))
-    @JsonIgnoreProperties("candidates")
-    //@ToString.Exclude
     private Set<Resume> resumes = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "Candidate_Skills",
             joinColumns = @JoinColumn(name = "candidateId"),
             inverseJoinColumns = @JoinColumn(name = "skillsId"))
-    @JsonIgnoreProperties("candidates")
-    //@ToString.Exclude
     private Set<Skills> skills = new HashSet<>();
 
-    @OneToOne(mappedBy = "candidate", fetch = FetchType.LAZY)
-    //@ToString.Exclude
-    @JsonManagedReference
-    private Vacancy vacancies;
 }

@@ -6,6 +6,11 @@ function AddCandidateForm({ onClose, fetchCandidates }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+    const [gender, setGender] = useState('');
+    const [nationality, setNationality] = useState('');
+    const [education, setEducation] = useState('');
+    const [phone, setPhone] = useState('');
+    const [searchStatus, setSearchStatus] = useState('');
     const [selectedSkills, setSelectedSkills] = useState([]);
     const [resumePosition, setResumePosition] = useState('');
     const [resumeContent, setResumeContent] = useState('');
@@ -35,6 +40,11 @@ function AddCandidateForm({ onClose, fetchCandidates }) {
                 firstName,
                 lastName,
                 email,
+                gender,
+                nationality,
+                education,
+                phone,
+                searchStatus,
                 skills: selectedSkills.map(skill => skill.value), // Отправляем только значения выбранных скиллов
                 resume: {
                     position: resumePosition,
@@ -69,6 +79,26 @@ function AddCandidateForm({ onClose, fetchCandidates }) {
                 <div className="form-group">
                     <label>Email:</label>
                     <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                </div>
+                <div className="form-group">
+                    <label>Пол:</label>
+                    <input type="text" value={gender} onChange={(e) => setGender(e.target.value)} required />
+                </div>
+                <div className="form-group">
+                    <label>Гражданство:</label>
+                    <input type="text" value={nationality} onChange={(e) => setNationality(e.target.value)} required />
+                </div>
+                <div className="form-group">
+                    <label>Образование:</label>
+                    <input type="text" value={education} onChange={(e) => setEducation(e.target.value)} required />
+                </div>
+                <div className="form-group">
+                    <label>Телефон:</label>
+                    <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} required />
+                </div>
+                <div className="form-group">
+                    <label>Статус поиска:</label>
+                    <input type="text" value={searchStatus} onChange={(e) => setSearchStatus(e.target.value)} required />
                 </div>
                 {/* Выбор навыков */}
                 <div className="form-group">

@@ -26,7 +26,7 @@ function AddSkillForm({onClose, fetchSkills}) {
     };
 
     return (
-        <div className="candidate-card-modal">
+        <div className="candidate-card-modal-skills">
             <h2>Добавить навык</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">

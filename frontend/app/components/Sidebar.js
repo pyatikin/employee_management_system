@@ -3,17 +3,15 @@ import { NavLink } from 'react-router-dom';
 
 function Sidebar() {
     const [vacancySubMenuOpen, setVacancySubMenuOpen] = useState(false);
+    const [reportSubMenuOpen, setReportSubMenuOpen] = useState(false);
 
     const toggleSubMenu = () => {
         setVacancySubMenuOpen(!vacancySubMenuOpen);
     };
 
-    const [reportSubMenuOpen, setReportSubMenuOpen] = useState(false);
-
     const toggleReportSubMenu = () => {
         setReportSubMenuOpen(!reportSubMenuOpen);
     };
-    
 
     const closeMenu = () => {
         document.querySelector('.sidebar').classList.remove('open');
@@ -24,12 +22,13 @@ function Sidebar() {
             <nav>
                 <div>
                     <div className="submenu">
+                        <NavLink to="/employee-profile" activeClassName="active" onClick={closeMenu}>Профиль</NavLink> {/* Добавлен пункт меню для профиля */}
                         <span onClick={toggleSubMenu}>Вакансии</span>
                         {vacancySubMenuOpen && (
                             <ul>
                                 <li><NavLink to="/open-vacancies" activeClassName="active" onClick={closeMenu}>Открытые</NavLink></li>
                                 <li><NavLink to="/working-vacancies" activeClassName="active" onClick={closeMenu}>В работе</NavLink></li>
-                                <li><NavLink to="/closed-vacancies" activeClassName="active" onClick={closeMenu}>Закрытые вакансии</NavLink></li>
+                                <li><NavLink to="/closed-vacancies" activeClassName="active" onClick={closeMenu}>Закрытые</NavLink></li>
                             </ul>
                         )}
                     </div>
@@ -45,6 +44,7 @@ function Sidebar() {
                             </ul>
                         )}
                     </div>
+
                 </div>
             </nav>
         </div>

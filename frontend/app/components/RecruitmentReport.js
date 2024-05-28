@@ -51,10 +51,12 @@ function RecruitmentReport({ setPageTitle }) {
             {reportData && (
                 <div className="report-details">
                     <h3>Отчет по вакансии "{reportData.name || 'Название вакансии не доступно'}"</h3>
-                    <p>Время потраченное на подбор: {reportData.timeSpent || '2 дня'}</p>
-                    <p>Количество рассмотренных кандидатов: {reportData.candidatesReviewed || '3 кандидата'}</p>
+                    <p>Время потраченное на подбор: {reportData.daysSpent==0?"В процессе":reportData.daysSpent}</p>
+                    <p>Количество рассмотренных кандидатов: {reportData.candidateCount || '0 кандидата'}</p>
+                    <p>Процент кандидатов прошедших интервью: {reportData.candidatesWithInterview + " %" || '0 %'}</p>
+                    <p>Количество кандидатов прошедших телевонный разговор: {reportData.candidatesWithConversation + " %" || '0 %'}</p>
                     <p>Результат подбора: {reportData.recruitmentResult || 'В процессе'}</p>
-                    <p>Выбранный кандидат: <Link to={`/candidates/${reportData.selectedCandidateId || ''}`}>{reportData.selectedCandidateName || 'Данные отсутствуют'}</Link></p>
+                    <p>Выбранный кандидат: <Link to={`/candidates/${reportData.candidate?.candidateId || ''}`}>{reportData.candidate?.firstName + reportData.candidate?.lastName || 'Данные отсутствуют'}</Link></p>
                 </div>
             )}
         </div>
