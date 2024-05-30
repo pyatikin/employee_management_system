@@ -3,8 +3,8 @@ import axios from 'axios';
 import ChangeVacancyStatusDialog from './ChangeVacancyStatusDialog';
 import ViewCandidatesInInterviewDialog from './ViewCandidatesInInterview';
 import ViewVacancyClosedDialog from "./ViewVacancyClosedDialog";
-import ViewSelectedCandidateDialog from "./ViewSelectedCandidateDialog"; // Импортируем диалог для просмотра выбранного кандидата
-//import ViewEmploymentContractDialog from "./ViewEmploymentContractDialog"; // Импортируем диалог для просмотра трудового договора
+import ViewSelectedCandidateDialog from "./ViewSelectedCandidateDialog";
+import templateDocx from '../docs/template.docx'; // Импортируем файл
 
 function ClosedVacancies({ setPageTitle }) {
     const [closedVacancies, setClosedVacancies] = useState([]);
@@ -64,6 +64,15 @@ function ClosedVacancies({ setPageTitle }) {
         setViewEmploymentContractDialogOpen(true);
     };
 
+    const downloadTemplate = () => {
+        const link = document.createElement('a');
+        link.href = templateDocx;
+        link.download = 'template.docx';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     const renderVacancyRow = vacancy => {
         return (
             <tr key={vacancy.vacancyId}>
@@ -74,7 +83,7 @@ function ClosedVacancies({ setPageTitle }) {
                     <button onClick={() => openViewVacancyDialog(vacancy)}>Просмотр</button>
                     <button onClick={() => openChangeStatusDialog(vacancy.vacancyId)}>Изменить статус</button>
                     <button onClick={() => openSelectedCandidateDialog(vacancy)}>Просмотр выбранного кандидата</button>
-                    <button onClick={() => openEmploymentContractDialog(vacancy)}>Просмотреть трудовой договор</button>
+                    <button onClick={downloadTemplate}>Просмотреть трудовой договор</button>
                 </td>
             </tr>
         );
@@ -109,3 +118,4 @@ function ClosedVacancies({ setPageTitle }) {
 }
 
 export default ClosedVacancies;
+

@@ -17,7 +17,7 @@ module.exports = {
         open: true
     },
     module:{
-        rules:[   //загрузчик для jsx
+        rules:[   // загрузчики
             {
                 test: /\.jsx?$/, // определяем тип файлов
                 exclude: /(node_modules)/,  // исключаем из обработки папку node_modules
@@ -30,6 +30,19 @@ module.exports = {
                 test: /\.css$/i,
                 use: ["style-loader", "css-loader"],
             },
+            {
+                test: /\.(docx)$/i, // добавляем загрузчик для файлов docx
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'assets/', // куда помещать файлы в выходной директории
+                            publicPath: '/public/assets/' // путь, по которому будут доступны файлы в браузере
+                        }
+                    }
+                ]
+            }
         ]
     }
-}
+};
