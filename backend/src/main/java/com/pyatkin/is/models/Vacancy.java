@@ -42,9 +42,6 @@ public class Vacancy {
     @Column(name = "Experience", nullable = false)
     private String experience;
 
-    @OneToMany(mappedBy = "vacancy", fetch = FetchType.LAZY)
-    private List<Interview> interviews = new ArrayList<>();
-
     @Transient
     private Long departmentId;
 

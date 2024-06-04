@@ -36,6 +36,12 @@ function RecruitmentReport({ setPageTitle }) {
         fetchRecruitmentReport(vacancyId);
     };
 
+    const daysCheck = (reportData) => {
+      if (reportData.recruitmentResult === 'закрыта') {
+          reportData.daysSpent +=1;
+      }
+    };
+
     return (
         <div className="recruitment-report-container">
             <h2>Отчетность по трудозатратам</h2>
@@ -51,7 +57,7 @@ function RecruitmentReport({ setPageTitle }) {
             {reportData && (
                 <div className="report-details">
                     <h3>Отчет по вакансии "{reportData.name || 'Название вакансии не доступно'}"</h3>
-                    <p>Время потраченное на подбор: {reportData.daysSpent==0?"В процессе":reportData.daysSpent}</p>
+                    <p>Время потраченное на подбор: { daysCheck(reportData)&&reportData.daysSpent+1===0?"В процессе":reportData.daysSpent +' дней'}</p>
                     <p>Количество рассмотренных кандидатов: {reportData.candidateCount || '0 кандидата'}</p>
                     <p>Процент кандидатов прошедших интервью: {reportData.candidatesWithInterview + " %" || '0 %'}</p>
                     <p>Количество кандидатов прошедших телевонный разговор: {reportData.candidatesWithConversation + " %" || '0 %'}</p>

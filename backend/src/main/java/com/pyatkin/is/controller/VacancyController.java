@@ -89,7 +89,7 @@ public class VacancyController {
         vacancy.setExperience(vacancyRequest.getExperience());
         vacancy.setSalary(vacancyRequest.getSalary());
         vacancy.setHiringDeadline(vacancyRequest.getHiringDeadline());
-        vacancy.setInterviews(null);
+       //vacancy.setInterviews(null);
         vacancy.setCandidate(null);
         Vacancy createdVacancy = vacancyRepository.save(vacancy);
         return new ResponseEntity<>(createdVacancy, HttpStatus.CREATED);

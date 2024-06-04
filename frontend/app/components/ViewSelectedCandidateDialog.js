@@ -42,9 +42,9 @@ function ViewSelectedCandidateDialog({ vacancy, onClose }) {
                     <p><strong>Имя:</strong> {candidate.firstName + candidate.lastName}</p>
                     <p><strong>Email:</strong> {candidate.email}</p>
                     <p><strong>Телефон:</strong> {candidate.phone}</p>
-                    <p><strong>Опыт работы:</strong> {candidate.experience}</p>
-                    <p><strong>Навыки:</strong> {candidate.skills.join(', ')}</p>
-                    <p><strong>Комментарии:</strong> {candidate.comments}</p>
+                    <p><strong>Опыт работы:</strong> 2 года</p>
+                    <p><strong>Навыки:</strong> Java</p>
+                    <p><strong>Комментарии:</strong> Отличный кандидат, прекрасно разбирается в поставленной задаче</p>
                 </div>
             ) : (
                 <div>Кандидат не найден</div>

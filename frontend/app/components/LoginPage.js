@@ -21,7 +21,7 @@ const LoginPage = () => {
 
     if (loggedIn) {
         // Если пользователь успешно авторизован, перенаправляем на главную страницу
-        return <Navigate to="/" />;
+        return <Navigate to="/open-vacancies" />;
     }
 
     return (

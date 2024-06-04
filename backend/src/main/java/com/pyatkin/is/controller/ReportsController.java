@@ -6,6 +6,7 @@ import com.pyatkin.is.models.Interview;
 import com.pyatkin.is.models.Vacancy;
 import com.pyatkin.is.models.VacancyStatusReportItem;
 import com.pyatkin.is.repository.HiringStageRepository;
+import com.pyatkin.is.repository.InterviewRepository;
 import com.pyatkin.is.repository.VacancyRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.Data;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
@@ -31,11 +31,13 @@ public class ReportsController {
 
     private final VacancyRepository vacancyRepository;
     private final HiringStageRepository hiringStageRepository;
+    private final InterviewRepository interviewRepository;
 
     @Autowired
-    public ReportsController(VacancyRepository vacancyRepository, HiringStageRepository hiringStageRepository) {
+    public ReportsController(VacancyRepository vacancyRepository, HiringStageRepository hiringStageRepository, InterviewRepository interviewRepository) {
         this.vacancyRepository = vacancyRepository;
         this.hiringStageRepository = hiringStageRepository;
+        this.interviewRepository = interviewRepository;
     }
 
     @GetMapping("/vacancy-status")
@@ -68,7 +70,8 @@ public class ReportsController {
             long daysSpent = (startDate!=null&&endDate!=null)?Period.between(startDate, endDate).getDays():0;
 
             // Получаем количество кандидатов для данной вакансии
-            List<Interview> interviews = vacancy.getInterviews();
+
+            List<Interview> interviews = interviewRepository.findAllByVacancy(vacancy);
             long candidateCount = interviews.size();
 
             // Вычисляем количество кандидатов на рассмотрении, прошедших телефонное интервью и собеседование

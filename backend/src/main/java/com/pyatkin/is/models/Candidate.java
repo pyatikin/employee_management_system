@@ -52,10 +52,6 @@ public class Candidate {
     @Column(name = "SearchStatus")
     private String searchStatus;
 
-    @OneToMany(mappedBy = "candidate", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties("candidate")
-    private List<Interview> interviews = new ArrayList<>();
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "Candidate_Resume",
             joinColumns = @JoinColumn(name = "candidateId"),

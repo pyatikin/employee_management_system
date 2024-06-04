@@ -25,7 +25,20 @@ function ViewCandidatesInInterview({ vacancy, onClose }) {
     const fetchCandidatesInInterview = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/interviews/${vacancy.vacancyId}/candidates`);
-            setCandidates(response.data);
+            const candidatesData = response.data;
+
+            // Получаем оценки кандидатов и вычисляем их сумму
+            const candidatesWithScores = await Promise.all(candidatesData.map(async candidate => {
+                const interviewResponse = await axios.get(`http://localhost:8080/interviews/${vacancy.vacancyId}/candidates/${candidate.candidateId}`);
+                const interviewInfo = interviewResponse.data;
+                const totalScore = (interviewInfo.interviewEvaluation || 0) + (interviewInfo.conversationEvaluation || 0) + (interviewInfo.recommendationEvaluation || 0);
+                return { ...candidate, totalScore };
+            }));
+
+            // Сортируем кандидатов по сумме баллов
+            const sortedCandidates = candidatesWithScores.sort((a, b) => b.totalScore - a.totalScore);
+
+            setCandidates(sortedCandidates);
         } catch (error) {
             console.error('Error fetching candidates in interview:', error);
         }
@@ -107,7 +120,6 @@ function ViewCandidatesInInterview({ vacancy, onClose }) {
         }
     };
 
-
     return (
         <div className="candidate-card-modal">
             <span className="close" onClick={onClose}>&times;</span>
@@ -116,7 +128,7 @@ function ViewCandidatesInInterview({ vacancy, onClose }) {
                 {candidates.map(candidate => (
                     <li key={candidate.candidateId}>
                         <p>
-                            {candidate.firstName} {candidate.lastName}
+                            {candidate.firstName} {candidate.lastName} (Общий балл: {candidate.totalScore})
                             <button onClick={() => handleCandidateClick(candidate)}>
                                 Просмотреть собеседование
                             </button>
